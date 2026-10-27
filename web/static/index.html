@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Agent Studio - Fear Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Main App Shell -->
+  <div class="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-brands fa-youtube"></i>
+        </div>
+        <div class="brand-info">
+          <h2>YouTube <span class="brand-studio">Studio</span></h2>
+          <span class="badge-tag">AGENT SUITE</span>
+        </div>
+      </div>
+
+      <!-- Channel Quick Status -->
+      <div class="channel-card-mini" id="sidebar-channel-card">
+        <div class="channel-avatar" id="ch-avatar">
+          <img src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+        </div>
+        <div class="channel-details">
+          <div class="channel-name" id="ch-name">Fear Studio</div>
+          <div class="channel-sub" id="ch-handle">@FearStudio96</div>
+        </div>
+        <span class="status-dot" title="Linked & Ready"></span>
+      </div>
+
+      <!-- Nav Links -->
+      <nav class="nav-menu">
+        <div class="nav-section-label">OVERVIEW & ANALYTICS</div>
+        <button class="nav-item active" data-tab="tab-channel" id="nav-btn-channel">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Channel Hub</span>
+        </button>
+        <button class="nav-item" data-tab="tab-studio" id="nav-btn-studio">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Studio Analytics</span>
+          <span class="pill-badge" id="studio-status-badge">API</span>
+        </button>
+        <button class="nav-item" data-tab="tab-audit" id="nav-btn-audit">
+          <i class="fa-solid fa-stethoscope"></i>
+          <span>Channel Audit</span>
+          <span class="pill-badge" style="background: rgba(255,43,85,0.2); color:#ff2b55;">1 Fix</span>
+        </button>
+
+        <div class="nav-section-label">SCRIPTING & PACKAGING</div>
+        <button class="nav-item" data-tab="tab-hook" id="nav-btn-hook">
+          <i class="fa-solid fa-bullseye"></i>
+          <span>Hook Scorer</span>
+          <span class="pill-badge">21 Formulas</span>
+        </button>
+        <button class="nav-item" data-tab="tab-title" id="nav-btn-title">
+          <i class="fa-solid fa-tag"></i>
+          <span>Title & Thumbnail</span>
+          <span class="pill-badge">Linter</span>
+        </button>
+        <button class="nav-item" data-tab="tab-script" id="nav-btn-script">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Script Studio</span>
+        </button>
+        <button class="nav-item" data-tab="tab-seo" id="nav-btn-seo">
+          <i class="fa-solid fa-magnifying-glass-chart"></i>
+          <span>SEO & Tags</span>
+        </button>
+        <button class="nav-item" data-tab="tab-shorts" id="nav-btn-shorts">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <span>Shorts Extractor</span>
+        </button>
+
+        <div class="nav-section-label">PRODUCTION & STRATEGY</div>
+        <button class="nav-item" data-tab="tab-chapters" id="nav-btn-chapters">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Chapters & EDL</span>
+        </button>
+        <button class="nav-item" data-tab="tab-plan" id="nav-btn-plan">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Content Calendar</span>
+        </button>
+        <button class="nav-item" data-tab="tab-comment" id="nav-btn-comment">
+          <i class="fa-solid fa-comments"></i>
+          <span>Comment Responder</span>
+        </button>
+        <button class="nav-item" data-tab="tab-voice" id="nav-btn-voice">
+          <i class="fa-solid fa-microphone-lines"></i>
+          <span>Voice Profile</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="system-status" id="system-status-indicator">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Claude-Free Engine</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Drawer Backdrop (Mobile) -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn btn-secondary mobile-menu-btn" id="btn-mobile-menu" aria-label="Toggle Navigation Drawer" title="Open Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="topbar-title">
+            <h1 id="page-title">Channel Hub</h1>
+            <p id="page-desc">Overview and content library for Fear Studio</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary theme-toggle-btn" id="btn-theme-toggle" title="Switch Theme (Light / Dark)">
+            <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+            <span id="theme-toggle-text">Dark</span>
+          </button>
+          <button class="btn btn-secondary btn-relink-topbar" id="btn-relink-channel">
+            <i class="fa-solid fa-link"></i> <span class="btn-label-text">Link Channel</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-scrollable">
+
+        <!-- TAB 1: CHANNEL HUB -->
+        <section class="tab-pane active" id="tab-channel">
+          <div class="channel-hero">
+            <div class="hero-left">
+              <div class="hero-avatar">
+                <i class="fa-solid fa-ghost"></i>
+              </div>
+              <div class="hero-info">
+                <div class="hero-title-row">
+                  <h2 id="hub-channel-name">Fear Studio</h2>
+                  <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Active Channel</span>
+                </div>
+                <p class="hero-desc" id="hub-channel-desc">Loading description...</p>
+                <div class="hero-tags">
+                  <span class="tag tag-subs" id="hub-tag-subs"><i class="fa-solid fa-users"></i> <strong id="hub-subscriber-count">120</strong> Subscribers</span>
+                  <span class="tag" id="hub-tag-videos"><i class="fa-solid fa-video"></i> <strong id="hub-video-count">39</strong> Videos</span>
+                  <span class="tag tag-lifetime" id="hub-tag-views"><i class="fa-solid fa-fire"></i> <strong id="hub-lifetime-views">67.9K</strong> Views</span>
+                  <span class="tag"><i class="fa-solid fa-masks-theater"></i> Dark / Horror Storytelling</span>
+                  <a href="https://www.youtube.com/@FearStudio96" target="_blank" class="tag tag-link" id="hub-yt-link">
+                    <i class="fa-brands fa-youtube"></i> Open YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-Time Studio Performance Banner with Date Filter -->
+          <div class="studio-stat-banner" id="hub-studio-banner">
+            <div class="stat-banner-header">
+              <div class="banner-title-group">
+                <span><i class="fa-solid fa-bolt" style="color: #ff2b55;"></i> Official YouTube Studio Analytics (Live)</span>
+                <span class="live-pill"><span class="pulse-dot"></span> Google OAuth Connected</span>
+              </div>
+              <div class="date-filter-wrap">
+                <label for="hub-date-filter"><i class="fa-solid fa-calendar-day"></i> Period:</label>
+                <select id="hub-date-filter" class="studio-date-select">
+                  <option value="7">Last 7 days</option>
+                  <option value="28" selected>Last 28 days (Default)</option>
+                  <option value="90">Last 90 days</option>
+                  <option value="365">Last 365 days</option>
+                  <option value="lifetime">Lifetime</option>
+                </select>
+              </div>
+            </div>
+            <div class="stat-banner-grid">
+              <div class="banner-stat-item">
+                <span class="stat-lbl"><i class="fa-solid fa-eye"></i> Views (<span class="banner-period-label">28d</span>)</span>
+                <strong class="stat-val" id="hub-stat-views">2,701</strong>
+              </div>
+              <div class="banner-stat-item">
+                <span class="stat-lbl"><i class="fa-solid fa-clock"></i> Watch Time</span>
+                <strong class="stat-val" id="hub-stat-hours">3.9 hrs</strong>
+              </div>
+              <div class="banner-stat-item">
+                <span class="stat-lbl"><i class="fa-solid fa-chart-pie"></i> Avg. Percentage</span>
+                <strong class="stat-val" id="hub-stat-pct">33.5%</strong>
+              </div>
+              <div class="banner-stat-item">
+                <span class="stat-lbl"><i class="fa-solid fa-stopwatch"></i> Avg. Duration</span>
+                <strong class="stat-val" id="hub-stat-dur">0m 15s</strong>
+              </div>
+              <div class="banner-stat-item">
+                <span class="stat-lbl"><i class="fa-solid fa-user-plus"></i> Net Subscribers</span>
+                <strong class="stat-val" id="hub-stat-subs">+5</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Grid with Search & Sort Filter -->
+          <div class="section-header-toolbar">
+            <div class="section-header-text">
+              <h3>Recent Uploads & Baseline</h3>
+              <span class="sub-text">Click any video to score its title or generate a follow-up</span>
+            </div>
+            <div class="video-filter-controls">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="video-search-input" placeholder="Search videos by title..." autocomplete="off">
+              </div>
+              <select id="video-sort-select" class="studio-select-small">
+                <option value="default">Default Order</option>
+                <option value="az">Title A-Z</option>
+                <option value="za">Title Z-A</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="videos-grid" id="videos-container">
+            <!-- Dynamic video cards populated by JS -->
+          </div>
+        </section>
+
+        <!-- TAB 2: HOOK SCORER -->
+        <section class="tab-pane" id="tab-hook">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Hook Diagnostic & 5-Property Panel</h3>
+                <p>Calculates Specificity, Address, Stakes, Curiosity and Brevity before you waste a take.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="hook-input">Spoken Opening Line (First 10-15 seconds)</label>
+              <div class="input-with-button">
+                <input type="text" id="hook-input" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
+                <button class="btn btn-primary" id="btn-score-hook">
+                  <i class="fa-solid fa-bolt"></i> Score Hook
+                </button>
+              </div>
+            </div>
+
+            <!-- Hook Presets -->
+            <div class="hook-presets">
+              <span class="preset-label">Test Real Channel Titles:</span>
+              <button class="preset-chip" data-hook="Something was wrong with my uncle's house the moment I entered.">Uncle's House</button>
+              <button class="preset-chip" data-hook="Every eldest child in our family dies at 21, and today is my birthday.">Eldest at 21</button>
+              <button class="preset-chip" data-hook="I stayed in school after midnight, and realized I was not alone.">School Midnight</button>
+            </div>
+
+            <!-- Score Results Container -->
+            <div class="score-results hidden" id="hook-results-panel">
+              <div class="results-grid">
+                
+                <!-- Left: Overall Verdict Card -->
+                <div class="verdict-card" id="verdict-box">
+                  <div class="verdict-label">FINAL VERDICT</div>
+                  <div class="verdict-score" id="hook-verdict-num">--</div>
+                  <div class="verdict-band" id="hook-band-badge">ANALYZING</div>
+                  <div class="verdict-formula">
+                    <i class="fa-solid fa-dna"></i> Formula: <strong id="hook-formula-name">--</strong>
+                  </div>
+                  <div class="verdict-weakest" id="hook-weakest-box">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Weakest: <span id="hook-weakest-prop">--</span>
+                    <p id="hook-fix-advice">--</p>
+                  </div>
+                </div>
+
+                <!-- Right: 5 Properties Breakdown Bars -->
+                <div class="properties-card">
+                  <h4>5-Property Diagnostics (Weakest Link Weighted)</h4>
+                  
+                  <div class="prop-bar-item">
+                    <div class="prop-header">
+                      <span><i class="fa-solid fa-hashtag"></i> SPECIFICITY (Numbers, names, dates)</span>
+                      <strong id="val-specificity">0/100</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="bar-specificity" style="width: 0%"></div>
+                    </div>
+                  </div>
+
+                  <div class="prop-bar-item">
+                    <div class="prop-header">
+                      <span><i class="fa-solid fa-user"></i> ADDRESS (Saying 'you' in first 6 words)</span>
+                      <strong id="val-address">0/100</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="bar-address" style="width: 0%"></div>
+                    </div>
+                  </div>
+
+                  <div class="prop-bar-item">
+                    <div class="prop-header">
+                      <span><i class="fa-solid fa-fire"></i> STAKES (What is risked or lost)</span>
+                      <strong id="val-stakes">0/100</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="bar-stakes" style="width: 0%"></div>
+                    </div>
+                  </div>
+
+                  <div class="prop-bar-item">
+                    <div class="prop-header">
+                      <span><i class="fa-solid fa-circle-question"></i> CURIOSITY (Unclosed cognitive loop)</span>
+                      <strong id="val-curiosity">0/100</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="bar-curiosity" style="width: 0%"></div>
+                    </div>
+                  </div>
+
+                  <div class="prop-bar-item">
+                    <div class="prop-header">
+                      <span><i class="fa-solid fa-stopwatch"></i> BREVITY (9-24 spoken words in 10s)</span>
+                      <strong id="val-brevity">0/100</strong>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="bar-brevity" style="width: 0%"></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: TITLE & THUMBNAIL LINTER -->
+        <section class="tab-pane" id="tab-title">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Title & Thumbnail Packaging Linter</h3>
+                <p>The title and thumbnail are ONE unit. Checks 60/40 truncation, word duplication, and vague adjectives.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col">
+                <label for="input-title">Video Title</label>
+                <input type="text" id="input-title" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone">
+                <div class="char-counter">
+                  <span id="title-char-count">0</span> characters (Desktop cut: 60 | Mobile cut: 40)
+                </div>
+              </div>
+              <div class="form-col">
+                <label for="input-thumb">Thumbnail Text (3 Words Max)</label>
+                <input type="text" id="input-thumb" placeholder="e.g. DON'T LOOK BACK">
+                <div class="char-counter">
+                  <span id="thumb-word-count">0</span> words (3 words maximum at feed size)
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary" id="btn-lint-title">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> Lint Packaging
+              </button>
+            </div>
+
+            <!-- Live Previews -->
+            <div class="packaging-results hidden" id="title-results-panel">
+              <div class="lint-grid">
+                
+                <!-- Left: Lint Diagnostics -->
+                <div class="lint-report">
+                  <div class="score-pill-row">
+                    <h4>Packaging Health Score</h4>
+                    <span class="score-large" id="packaging-score">100/100</span>
+                  </div>
+
+                  <div class="issues-list" id="lint-issues-box">
+                    <!-- Issue tags populated by JS -->
+                  </div>
+
+                  <div class="good-list" id="lint-goods-box">
+                    <!-- Good tags populated by JS -->
+                  </div>
+                </div>
+
+                <!-- Right: Visual YouTube Feed Simulation -->
+                <div class="feed-sim-card">
+                  <h4>Live Feed Simulator</h4>
+                  <div class="yt-mock-card">
+                    <div class="yt-mock-thumb">
+                      <div class="yt-thumb-text" id="sim-thumb-text">THUMBNAIL TEXT</div>
+                      <span class="yt-thumb-duration">12:45</span>
+                    </div>
+                    <div class="yt-mock-info">
+                      <div class="yt-mock-channel-icon">FS</div>
+                      <div class="yt-mock-text">
+                        <div class="yt-sim-desktop-title" id="sim-desktop-title">Title will appear here...</div>
+                        <div class="yt-sim-mobile-note">Mobile cutoff: <span id="sim-mobile-title">--</span></div>
+                        <div class="yt-mock-meta">Fear Studio • 12K views • 2 days ago</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB 4: SCRIPT WRITER -->
+        <section class="tab-pane" id="tab-script">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>AI Script Studio (yt-script)</h3>
+                <p>Generates 5 hooks off the 21 formulas, scores them, and writes spoken scripts matching Fear Studio's dark voice.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="script-topic">Your Video Idea or Topic</label>
+              <textarea id="script-topic" rows="3" placeholder="e.g. A true horror story about an abandoned midnight hospital where the emergency room monitor still beeps..."></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary" id="btn-generate-script">
+                <i class="fa-solid fa-scroll"></i> Generate Horror Script
+              </button>
+            </div>
+
+            <!-- Script Output Area -->
+            <div class="script-output-container hidden" id="script-result-box">
+              <div class="script-header-row">
+                <h4>Generated Script & Retention Beats</h4>
+                <div class="script-actions">
+                  <button class="btn btn-sm btn-secondary" id="btn-copy-script">
+                    <i class="fa-solid fa-copy"></i> Copy Script
+                  </button>
+                  <a href="https://chat.openai.com" target="_blank" class="btn btn-sm btn-secondary">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open ChatGPT
+                  </a>
+                </div>
+              </div>
+              <div class="script-content-pre" id="script-text-body"></div>
+              
+              <!-- Gate Question -->
+              <div class="gate-bar">
+                <span class="gate-title">The Gate:</span>
+                <span>Every script requires creator verification.</span>
+                <div class="gate-buttons">
+                  <button class="btn btn-success" onclick="alert('Ready to record! The hook and beats are locked.')">
+                    <i class="fa-solid fa-check"></i> Ship It!
+                  </button>
+                  <button class="btn btn-secondary" onclick="document.getElementById('script-topic').focus()">
+                    <i class="fa-solid fa-pen"></i> Change It
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- TAB 5: CHAPTERS & EDL -->
+        <section class="tab-pane" id="tab-chapters">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>YouTube Chapters & Dead-Air Editor</h3>
+                <p>Paste your .srt transcript to generate YouTube-compliant chapters (starts at 00:00, 10s min) or find dead air cuts.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="transcript-input">Transcript or SRT Content</label>
+              <textarea id="transcript-input" rows="8" placeholder="1
+00:00:01,000 --> 00:00:05,200
+Welcome back to the studio. Tonight we explore...
+
+2
+00:00:05,500 --> 00:00:12,000
+The house on the hill has been empty for over twenty years."></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary" id="btn-gen-chapters">
+                <i class="fa-solid fa-list-ol"></i> Generate Validated Chapters
+              </button>
+            </div>
+
+            <div class="output-box hidden" id="chapters-output-box">
+              <div class="output-header">
+                <h4>YouTube Description Chapter Block</h4>
+                <button class="btn btn-sm btn-secondary" id="btn-copy-chapters">
+                  <i class="fa-solid fa-copy"></i> Copy Chapters
+                </button>
+              </div>
+              <pre id="chapters-result-text"></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: VOICE PROFILE -->
+        <section class="tab-pane" id="tab-voice">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Channel Voice Profile (config/voice.md)</h3>
+                <p>This file defines the exact tone, forbidden words, and pacing used by all 11 skills.</p>
+              </div>
+              <button class="btn btn-primary" id="btn-save-voice">
+                <i class="fa-solid fa-floppy-disk"></i> Save Changes
+              </button>
+            </div>
+
+            <textarea id="voice-editor" rows="18" spellcheck="false"></textarea>
+          </div>
+        </section>
+
+        <!-- TAB 7: STUDIO ANALYTICS (OAuth 2.0) -->
+        <section class="tab-pane" id="tab-studio">
+          
+          <!-- State 1: Connected Live Metrics & Studio Dashboard -->
+          <div class="panel-card hidden" id="studio-connected-card">
+            
+            <!-- Channel Overview Header Strip -->
+            <div class="studio-channel-header">
+              <div class="studio-header-left">
+                <div class="studio-avatar" id="studio-ch-avatar">
+                  <img src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio" class="studio-avatar-img">
+                </div>
+                <div class="studio-ch-info">
+                  <div class="studio-name-row">
+                    <h3 id="studio-ch-name">Fear Studio</h3>
+                    <span class="studio-badge-verified"><i class="fa-solid fa-circle-check"></i> Connected</span>
+                  </div>
+                  <div class="studio-meta-badges">
+                    <span class="studio-meta-item"><i class="fa-solid fa-users" style="color: #ff2b55;"></i> <strong id="studio-overview-subs">120 subscribers</strong></span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-video"></i> <strong id="studio-overview-videos">39 videos</strong></span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-fire" style="color: #f59e0b;"></i> <strong id="studio-overview-lifetime-views">67,935</strong> Lifetime Views</span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-clock"></i> <strong id="studio-overview-lifetime-hours">165.7 hrs</strong> Lifetime Watch Time</span>
+                  </div>
+                </div>
+              </div>
+              <div class="studio-header-right">
+                <button class="btn btn-secondary btn-sm" id="btn-refresh-studio">
+                  <i class="fa-solid fa-arrows-rotate"></i> Refresh Studio Data
+                </button>
+              </div>
+            </div>
+
+            <!-- YouTube Studio Date Filter Bar -->
+            <div class="studio-filter-toolbar">
+              <div class="filter-pills-group" id="studio-date-pills">
+                <button class="filter-pill" data-days="7">Last 7 days</button>
+                <button class="filter-pill active" data-days="28">Last 28 days</button>
+                <button class="filter-pill" data-days="90">Last 90 days</button>
+                <button class="filter-pill" data-days="365">Last 365 days</button>
+                <button class="filter-pill" data-days="lifetime">Lifetime</button>
+              </div>
+              <div class="filter-period-display">
+                <i class="fa-regular fa-calendar"></i>
+                <span id="studio-report-period">Loading report period...</span>
+              </div>
+            </div>
+
+            <!-- Metric Cards Grid -->
+            <div class="studio-metrics-grid">
+              <div class="metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-eye"></i></div>
+                <div class="metric-data">
+                  <span class="metric-label">Views</span>
+                  <strong class="metric-val" id="metric-views">--</strong>
+                  <span class="metric-sub-note" id="metric-views-note">In selected period</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
+                <div class="metric-data">
+                  <span class="metric-label">Watch Time (Hours)</span>
+                  <strong class="metric-val" id="metric-hours">--</strong>
+                  <span class="metric-sub-note" id="metric-hours-note">Estimated hours watched</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-user-plus"></i></div>
+                <div class="metric-data">
+                  <span class="metric-label">Subscribers</span>
+                  <strong class="metric-val" id="metric-subs">--</strong>
+                  <span class="metric-sub-note" id="metric-subs-detail">Gained: -- | Lost: --</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <div class="metric-data">
+                  <span class="metric-label">Avg. Percentage Viewed</span>
+                  <strong class="metric-val" id="metric-avg-pct">--</strong>
+                  <span class="metric-sub-note">Video retention score</span>
+                </div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-icon"><i class="fa-solid fa-stopwatch"></i></div>
+                <div class="metric-data">
+                  <span class="metric-label">Avg. View Duration</span>
+                  <strong class="metric-val" id="metric-avg-dur">--</strong>
+                  <span class="metric-sub-note">Minutes per view</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- YouTube Studio Interactive Performance Chart -->
+            <div class="studio-chart-section">
+              <div class="chart-header">
+                <div>
+                  <h4><i class="fa-solid fa-chart-area" style="color: #ff2b55;"></i> Daily Views & Engagement Trend</h4>
+                  <p class="sub-text">Day-by-day trajectory across the selected period</p>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><span class="legend-color-dot views-dot"></span> Views</span>
+                </div>
+              </div>
+              <div class="chart-container" id="studio-chart-container">
+                <svg id="studio-svg-chart" viewBox="0 0 800 220" preserveAspectRatio="none">
+                  <!-- Generated by JS -->
+                </svg>
+                <div id="chart-tooltip" class="chart-tooltip hidden"></div>
+              </div>
+            </div>
+
+            <!-- Top Performing Videos in Period Table -->
+            <div class="studio-top-content-section">
+              <div class="chart-header">
+                <div>
+                  <h4><i class="fa-solid fa-trophy" style="color: #f59e0b;"></i> Top Content in this Period</h4>
+                  <p class="sub-text">Ranked by highest view count and audience attention</p>
+                </div>
+              </div>
+              <div class="top-videos-table-wrap">
+                <table class="studio-table" id="studio-top-videos-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 45px;">#</th>
+                      <th>Content</th>
+                      <th style="text-align: right;">Views</th>
+                      <th style="text-align: right;">Watch Time</th>
+                      <th style="text-align: right;">Avg Duration</th>
+                      <th style="text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studio-top-videos-body">
+                    <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading top videos...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Horror Niche Audience Retention Guide -->
+            <div class="studio-retention-guide">
+              <div class="guide-header">
+                <i class="fa-solid fa-lightbulb" style="color: #ff2b55;"></i>
+                <h4>Fear Studio Retention Checklist & Targets</h4>
+              </div>
+              <div class="guide-grid">
+                <div class="guide-box">
+                  <strong>The 0:15 Cold Open</strong>
+                  <p>Target >70% retention at 30 seconds. Do not insert logos or channel intros. Jump straight into the eerie setup.</p>
+                </div>
+                <div class="guide-box">
+                  <strong>Pacing Beats (130-145 wpm)</strong>
+                  <p>Horror requires breathing room. Slow down deliberately before reveal moments to build suffocating tension.</p>
+                </div>
+                <div class="guide-box">
+                  <strong>Thumbnail Pairing</strong>
+                  <p>Avoid duplicating title words on the thumbnail image. 3 words max on thumb (e.g. "DON'T LOOK BACK").</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- State 2: Setup & Connect Google OAuth -->
+          <div class="panel-card" id="studio-setup-card">
+            <div class="panel-header">
+              <div>
+                <h3>Connect Official YouTube Studio API (OAuth 2.0)</h3>
+                <p>Fetch your private watch time, retention curves, CTR, and real-time subscriber conversions directly from Google.</p>
+              </div>
+            </div>
+
+            <div class="oauth-setup-steps">
+              <div class="setup-step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>Enable YouTube Analytics API on Google Cloud (Free)</h4>
+                  <p>Visit <a href="https://console.cloud.google.com/apis/library/youtubeanalytics.googleapis.com" target="_blank">Google Cloud Console</a> and click <strong>Enable</strong> for YouTube Analytics API & YouTube Data API v3.</p>
+                </div>
+              </div>
+
+              <div class="setup-step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>Create OAuth 2.0 Client ID</h4>
+                  <p>Go to <strong>APIs & Services -> Credentials -> Create Credentials -> OAuth client ID</strong>. Select <em>Desktop app</em> (or Web application with redirect URI: <code>http://localhost:8088/callback</code>).</p>
+                </div>
+              </div>
+
+              <div class="setup-step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <h4>Enter Credentials Below</h4>
+                  <div class="form-row">
+                    <div class="form-col">
+                      <label for="oauth-client-id">Client ID</label>
+                      <input type="text" id="oauth-client-id" placeholder="xxxx.apps.googleusercontent.com">
+                    </div>
+                    <div class="form-col">
+                      <label for="oauth-client-secret">Client Secret</label>
+                      <input type="text" id="oauth-client-secret" placeholder="GOCSPX-xxxx">
+                    </div>
+                  </div>
+                  <div class="action-bar" style="margin-top: 10px;">
+                    <button class="btn btn-secondary" id="btn-save-oauth-creds">
+                      <i class="fa-solid fa-floppy-disk"></i> Save Credentials
+                    </button>
+                    <button class="btn btn-primary" id="btn-start-oauth-login">
+                      <i class="fa-brands fa-google"></i> Sign In With Google & Authorize
+                    </button>
+                  </div>
+                  <p class="modal-hint" style="margin-top: 8px;">Or copy your downloaded <code>client_secret.json</code> file into <code>config/client_secret.json</code>.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- TAB 8: CHANNEL AUDIT (yt-audit) -->
+        <section class="tab-pane" id="tab-audit">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>End-to-End Channel Audit (yt-audit)</h3>
+                <p>Audits packaging, mobile truncation, titles, and hook retention to deliver the ONE single biggest fix for this week.</p>
+              </div>
+              <button class="btn btn-primary" id="btn-run-audit">
+                <i class="fa-solid fa-stethoscope"></i> Run Audit Now
+              </button>
+            </div>
+
+            <div class="audit-results-container" id="audit-results-container">
+              <!-- Loading or Audit Content will populate here -->
+              <div class="audit-placeholder">
+                <p class="sub-text">Click "Run Audit Now" to evaluate Fear Studio's catalog and Studio metrics.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 9: SEO & TAGS (yt-seo) -->
+        <section class="tab-pane" id="tab-seo">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Search SEO & Tags Studio (yt-seo)</h3>
+                <p>Generate high-intent 2-line description snippets, 3 query targets, and focused disambiguation tags.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="seo-input-topic">Video Title or Premise</label>
+              <div class="input-with-button">
+                <input type="text" id="seo-input-topic" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
+                <button class="btn btn-primary" id="btn-gen-seo">
+                  <i class="fa-solid fa-magnifying-glass-chart"></i> Generate SEO Package
+                </button>
+              </div>
+            </div>
+
+            <div class="output-box hidden" id="seo-result-box">
+              <div class="output-header">
+                <h4>Search Package Results</h4>
+                <button class="btn btn-sm btn-secondary" id="btn-copy-seo-desc">
+                  <i class="fa-solid fa-copy"></i> Copy Description
+                </button>
+              </div>
+              <div id="seo-content-display"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 10: SHORTS EXTRACTOR (yt-shorts) -->
+        <section class="tab-pane" id="tab-shorts">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Viral Shorts Extractor (yt-shorts)</h3>
+                <p>Extract 3 self-contained vertical Short concepts with visual hooks and looping endings from any long-form video.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="shorts-input-text">Story Premise, Transcript, or Outline</label>
+              <textarea id="shorts-input-text" rows="4" placeholder="e.g. An encounter at an abandoned mountain cabin where investigators found a warm meal set on the table, but the only footprints led up to the ceiling..."></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary" id="btn-gen-shorts">
+                <i class="fa-solid fa-mobile-screen-button"></i> Extract 3 Viral Shorts
+              </button>
+            </div>
+
+            <div class="shorts-grid-container hidden" id="shorts-result-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 11: CONTENT CALENDAR (yt-plan) -->
+        <section class="tab-pane" id="tab-plan">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Content Calendar & Production Sizing (yt-plan)</h3>
+                <p>Build a 4-week upload plan with 4 idea tiers sized to your actual production hours.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col">
+                <label for="plan-input-hours">Production Hours Available Per Week</label>
+                <input type="number" id="plan-input-hours" value="8" min="2" max="40">
+              </div>
+              <div class="form-col">
+                <label for="plan-input-theme">Channel Focus / Niche Theme</label>
+                <input type="text" id="plan-input-theme" value="Atmospheric Horror & Paranormal Mysteries">
+              </div>
+            </div>
+
+            <div class="action-bar" style="margin-top: 14px;">
+              <button class="btn btn-primary" id="btn-gen-plan">
+                <i class="fa-solid fa-calendar-check"></i> Generate 4-Week Schedule
+              </button>
+            </div>
+
+            <div class="calendar-plan-container hidden" id="plan-result-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 12: COMMENT RESPONDER (yt-comment) -->
+        <section class="tab-pane" id="tab-comment">
+          <div class="panel-card">
+            <div class="panel-header">
+              <div>
+                <h3>Comment Responder & 4-Pile Triage (yt-comment)</h3>
+                <p>Triage pasted comments into 4 piles and draft replies matching Fear Studio's calm, atmospheric voice.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="comment-input-text">Paste YouTube Comments (one per line)</label>
+              <textarea id="comment-input-text" rows="5" placeholder="Is this story real or fiction?
+The audio design at 4:15 gave me actual goosebumps!
+Fake garbage unsubscribed.
+Where can I learn more about the uncle's house?"></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary" id="btn-triage-comments">
+                <i class="fa-solid fa-comments"></i> Triage & Draft Replies
+              </button>
+            </div>
+
+            <div class="comments-triage-container hidden" id="comment-result-box">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Re-link Channel Modal -->
+  <div class="modal-overlay hidden" id="modal-link">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Link YouTube Channel</h3>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label for="modal-input-url">Channel URL or Handle</label>
+        <input type="text" id="modal-input-url" placeholder="https://www.youtube.com/@FearStudio96" value="https://www.youtube.com/@FearStudio96">
+        <p class="modal-hint">We fetch public titles, metadata, and adapt the voice profile automatically without requiring any login credentials.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="modal-submit-link">
+          <i class="fa-solid fa-link"></i> Link Channel Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation (YouTube Studio Footer Tabs) -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="bottom-nav-item active" data-tab="tab-channel" id="bnav-channel" title="Channel Hub">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Hub</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="tab-studio" id="bnav-studio" title="Studio Analytics">
+      <i class="fa-solid fa-chart-line"></i>
+      <span>Studio</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="tab-hook" id="bnav-hook" title="Hook Scorer">
+      <i class="fa-solid fa-bullseye"></i>
+      <span>Hooks</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="tab-script" id="bnav-script" title="Script Studio">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span>Script</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="tab-comment" id="bnav-comment" title="Comment Replies">
+      <i class="fa-solid fa-comments"></i>
+      <span>Comments</span>
+    </button>
+    <button class="bottom-nav-item" id="bnav-more" title="All Skills & Tools">
+      <i class="fa-solid fa-bars-staggered"></i>
+      <span>More</span>
+    </button>
+  </nav>
+
+  <!-- Floating Toast Notifications (YouTube Style) -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

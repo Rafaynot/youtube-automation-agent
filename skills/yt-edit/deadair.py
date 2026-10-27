@@ -35,8 +35,22 @@ def load(path):
             cur = [parse_ts(m.group(1)), parse_ts(m.group(2)), []]
             cues.append(cur)
         elif cur is not None and line.strip() and not line.strip().isdigit():
-            cur[2].append(line.strip())
-    return [(a, b, " ".join(t)) for a, b, t in cues if t]
+    res = [(a, b, " ".join(t)) for a, b, t in cues if t]
+    if res:
+        return res
+
+    # Fallback: synthesize timestamps from plain text lines or paragraphs (e.g. ~135 WPM narration)
+    lines = [l.strip() for l in raw.splitlines() if l.strip()]
+    if lines:
+        synth = []
+        cur_t = 0.0
+        for l in lines:
+            words = len(l.split())
+            dur = max(2.5, words / 2.25)
+            synth.append((round(cur_t, 2), round(cur_t + dur, 2), l))
+            cur_t += dur + 0.6  # natural speech pause
+        return synth
+    return []
 
 def norm(t): return re.sub(r"[^a-z ]", "", t.lower()).split()
 

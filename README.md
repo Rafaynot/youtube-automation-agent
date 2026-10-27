@@ -37,10 +37,38 @@ Or as a plugin:
 /plugin install youtube-agent
 ```
 
-Project-local instead of global: copy the same folders into your repo's `.claude/skills/`. No Claude
-Code at all? Paste any single `SKILL.md` at the top of a chat and it runs as a mode. You lose the six
-Python tools, which is most of the point of `/yt-script`, `/yt-retention` and `/yt-edit`, but the
-rest works.
+Project-local instead of global: copy the same folders into your repo's `.claude/skills/`.
+
+### 🚀 Run With Modern Web UI Dashboard (Recommended)
+
+To launch the visual browser interface (zero-dependency, automatically opens browser):
+
+```bash
+python app.py
+# or:
+python run.py web
+```
+
+### Run via Command-Line / Terminal (Universal CLI Runner)
+
+You can also run every tool directly from your terminal:
+
+```bash
+# Interactive menu:
+python run.py
+
+# Run deterministic tools (offline, zero API):
+python run.py hook "Stop wasting 10 hours editing YouTube videos"
+python run.py title "Build an AI App in 10 Minutes" --thumb "STOP WASTING TIME"
+python run.py deadair transcript.srt
+python run.py chapters transcript.srt
+
+# Run AI skills (supports Gemini, OpenAI, Groq, Ollama, or prompt export):
+python run.py skill yt-script "Your video topic or idea"
+python run.py skill yt-package "Video idea"
+python run.py skill yt-plan "I have 5 hours this week"
+```
+
 
 Then spend ten minutes on [`templates/voice.md`](templates/voice.md). Copy it to
 `~/.claude/youtube/voice.md` and fill it in, or send Claude three of your own videos and say "write
