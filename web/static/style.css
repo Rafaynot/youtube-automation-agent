@@ -10,35 +10,52 @@
 :root,
 body.dark-theme {
   /* Surfaces & Backgrounds */
-  --bg-base: #0f0f0f;            /* YouTube Dark Canvas */
-  --bg-surface: #1f1f1f;         /* YouTube Studio Drawer / Sidebar */
-  --bg-card: #212121;            /* YouTube Studio Panel Cards */
-  --bg-elevated: #282828;        /* Elevated Tooltips & Dropdowns */
-  --bg-hover: #272727;           /* Item Hover State */
-  --bg-active: #383838;          /* Active Containers */
-  --bg-input: #121212;           /* Input Fields */
+  --bg-base: #0f0f0f;
+  /* YouTube Dark Canvas */
+  --bg-surface: #1f1f1f;
+  /* YouTube Studio Drawer / Sidebar */
+  --bg-card: #212121;
+  /* YouTube Studio Panel Cards */
+  --bg-elevated: #282828;
+  /* Elevated Tooltips & Dropdowns */
+  --bg-hover: #272727;
+  /* Item Hover State */
+  --bg-active: #383838;
+  /* Active Containers */
+  --bg-input: #121212;
+  /* Input Fields */
 
   /* Borders & Hairlines */
-  --border-subtle: #303030;      /* YouTube Hairline Dividers */
+  --border-subtle: #303030;
+  /* YouTube Hairline Dividers */
   --border-light: rgba(255, 255, 255, 0.1);
-  --border-focus: #3ea6ff;       /* YouTube Blue Focus */
+  --border-focus: #3ea6ff;
+  /* YouTube Blue Focus */
   --border-yt-red: #ff0000;
 
   /* Typography */
-  --text-primary: #f1f1f1;       /* High Contrast White */
-  --text-secondary: #aaaaaa;     /* Medium Contrast Grey */
-  --text-muted: #717171;         /* Low Contrast Timestamps */
+  --text-primary: #f1f1f1;
+  /* High Contrast White */
+  --text-secondary: #aaaaaa;
+  /* Medium Contrast Grey */
+  --text-muted: #717171;
+  /* Low Contrast Timestamps */
   --text-disabled: #525252;
 
   /* Brand & Accent Colors */
-  --yt-red: #ff0000;             /* Brand Play Red */
-  --yt-studio-red: #cc0000;      /* Studio CTA Red */
+  --yt-red: #ff0000;
+  /* Brand Play Red */
+  --yt-studio-red: #cc0000;
+  /* Studio CTA Red */
   --yt-crimson: #cc0000;
-  --yt-blue: #3ea6ff;            /* Studio Action Blue */
+  --yt-blue: #3ea6ff;
+  /* Studio Action Blue */
   --accent-cyan: #3ea6ff;
-  --accent-green: #2ba640;       /* Studio Positive Metric Green */
+  --accent-green: #2ba640;
+  /* Studio Positive Metric Green */
   --accent-yellow: #f59e0b;
-  --accent-red: #ff4e45;         /* Studio Drop-off Red */
+  --accent-red: #ff4e45;
+  /* Studio Drop-off Red */
   --accent-purple: #a855f7;
 
   /* Chips & Pill Buttons */
@@ -66,34 +83,51 @@ body.dark-theme {
 /* Official YouTube Studio Light Mode */
 body.light-theme {
   /* Surfaces & Backgrounds */
-  --bg-base: #f9f9f9;            /* YouTube Studio Light Canvas */
-  --bg-surface: #ffffff;         /* YouTube Studio Drawer / Sidebar */
-  --bg-card: #ffffff;            /* YouTube Studio Clean White Cards */
-  --bg-elevated: #f2f2f2;        /* Elevated Tooltips & Hover */
-  --bg-hover: #f2f2f2;           /* Light Item Hover */
-  --bg-active: #e5e5e5;          /* Active Containers */
-  --bg-input: #ffffff;           /* Crisp White Input */
+  --bg-base: #f9f9f9;
+  /* YouTube Studio Light Canvas */
+  --bg-surface: #ffffff;
+  /* YouTube Studio Drawer / Sidebar */
+  --bg-card: #ffffff;
+  /* YouTube Studio Clean White Cards */
+  --bg-elevated: #f2f2f2;
+  /* Elevated Tooltips & Hover */
+  --bg-hover: #f2f2f2;
+  /* Light Item Hover */
+  --bg-active: #e5e5e5;
+  /* Active Containers */
+  --bg-input: #ffffff;
+  /* Crisp White Input */
 
   /* Borders & Hairlines */
-  --border-subtle: #e5e5e5;      /* YouTube Studio Light Divider */
+  --border-subtle: #e5e5e5;
+  /* YouTube Studio Light Divider */
   --border-light: rgba(0, 0, 0, 0.08);
-  --border-focus: #065fd4;       /* Official YouTube Light Mode Blue */
+  --border-focus: #065fd4;
+  /* Official YouTube Light Mode Blue */
   --border-yt-red: #cc0000;
 
   /* Typography */
-  --text-primary: #0f0f0f;       /* High Contrast Black */
-  --text-secondary: #606060;     /* Medium Contrast Grey */
-  --text-muted: #909090;         /* Low Contrast Timestamps */
+  --text-primary: #0f0f0f;
+  /* High Contrast Black */
+  --text-secondary: #606060;
+  /* Medium Contrast Grey */
+  --text-muted: #909090;
+  /* Low Contrast Timestamps */
   --text-disabled: #cccccc;
 
   /* Brand & Accent Colors */
-  --yt-red: #ff0000;             /* Brand Play Red */
-  --yt-studio-red: #cc0000;      /* Studio CTA Red */
+  --yt-red: #ff0000;
+  /* Brand Play Red */
+  --yt-studio-red: #cc0000;
+  /* Studio CTA Red */
   --yt-crimson: #cc0000;
-  --yt-blue: #065fd4;            /* Official YouTube Light Blue */
+  --yt-blue: #065fd4;
+  /* Official YouTube Light Blue */
   --accent-cyan: #065fd4;
-  --accent-green: #0d8328;       /* High Readability Green */
-  --accent-yellow: #b45309;      /* Readable Amber */
+  --accent-green: #0d8328;
+  /* High Readability Green */
+  --accent-yellow: #b45309;
+  /* Readable Amber */
   --accent-red: #cc0000;
   --accent-purple: #7e22ce;
 
@@ -132,7 +166,9 @@ body.light-theme {
 }
 
 /* Reset & Box Sizing */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -158,13 +194,16 @@ body {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-base);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-hover);
 }
@@ -478,8 +517,15 @@ body {
 }
 
 @keyframes studioFadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================
@@ -1083,9 +1129,20 @@ body {
 }
 
 @keyframes pulse {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  50% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.8; }
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
 }
 
 .stat-banner-grid {
@@ -1117,7 +1174,8 @@ body {
   color: var(--text-primary);
 }
 
-.studio-date-select, .studio-select-small {
+.studio-date-select,
+.studio-select-small {
   background: var(--chip-bg);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
@@ -1131,8 +1189,10 @@ body {
   transition: all 0.15s ease;
 }
 
-.studio-date-select:hover, .studio-date-select:focus,
-.studio-select-small:hover, .studio-select-small:focus {
+.studio-date-select:hover,
+.studio-date-select:focus,
+.studio-select-small:hover,
+.studio-select-small:focus {
   border-color: var(--border-focus);
 }
 
@@ -1403,7 +1463,8 @@ label {
   margin-bottom: 6px;
 }
 
-input[type="text"], textarea {
+input[type="text"],
+textarea {
   width: 100%;
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
@@ -1416,7 +1477,8 @@ input[type="text"], textarea {
   transition: border-color 0.15s ease;
 }
 
-input[type="text"]:focus, textarea:focus {
+input[type="text"]:focus,
+textarea:focus {
   border-color: var(--border-focus);
 }
 
@@ -1479,7 +1541,8 @@ input[type="text"]:focus, textarea:focus {
 /* ==========================================================================
    RESULTS: HOOK SCORER, TITLE LINTER & SCRIPT BOX
    ========================================================================== */
-.score-results, .packaging-results {
+.score-results,
+.packaging-results {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid var(--border-subtle);
@@ -1527,9 +1590,20 @@ input[type="text"]:focus, textarea:focus {
   text-transform: uppercase;
 }
 
-.band-strong { background: rgba(43, 166, 64, 0.15); color: var(--accent-green); }
-.band-workable { background: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); }
-.band-weak { background: rgba(255, 78, 69, 0.15); color: var(--accent-red); }
+.band-strong {
+  background: rgba(43, 166, 64, 0.15);
+  color: var(--accent-green);
+}
+
+.band-workable {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-yellow);
+}
+
+.band-weak {
+  background: rgba(255, 78, 69, 0.15);
+  color: var(--accent-red);
+}
 
 .verdict-formula {
   font-size: 12.5px;
@@ -1613,7 +1687,8 @@ input[type="text"]:focus, textarea:focus {
   color: var(--accent-green);
 }
 
-.issues-list, .good-list {
+.issues-list,
+.good-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -2315,6 +2390,7 @@ pre {
 .yt-toast-success {
   border-left: 3px solid var(--accent-green);
 }
+
 .yt-toast-success .yt-toast-icon {
   color: var(--accent-green);
 }
@@ -2322,6 +2398,7 @@ pre {
 .yt-toast-error {
   border-left: 3px solid var(--accent-red);
 }
+
 .yt-toast-error .yt-toast-icon {
   color: var(--accent-red);
 }
@@ -2329,6 +2406,7 @@ pre {
 .yt-toast-warning {
   border-left: 3px solid var(--accent-yellow);
 }
+
 .yt-toast-warning .yt-toast-icon {
   color: var(--accent-yellow);
 }
@@ -2336,6 +2414,7 @@ pre {
 .yt-toast-info {
   border-left: 3px solid var(--yt-blue);
 }
+
 .yt-toast-info .yt-toast-icon {
   color: var(--yt-blue);
 }
@@ -2449,7 +2528,9 @@ body.drawer-no-scroll {
 
 /* 1. Large Tablets & Small Laptops (<= 1024px) */
 @media (max-width: 1024px) {
-  .results-grid, .lint-grid {
+
+  .results-grid,
+  .lint-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2520,11 +2601,15 @@ body.drawer-no-scroll {
   }
 
   .content-scrollable {
-    padding: 16px 14px 84px 14px; /* 84px safe space above footer tabs */
+    padding: 16px 14px 84px 14px;
+    /* 84px safe space above footer tabs */
   }
 
   /* Cards & Forms */
-  .channel-hero, .panel-card, .studio-stat-banner, .studio-channel-header {
+  .channel-hero,
+  .panel-card,
+  .studio-stat-banner,
+  .studio-channel-header {
     padding: 16px;
     margin-bottom: 16px;
   }
@@ -2640,7 +2725,8 @@ body.drawer-no-scroll {
 
   /* Toast Position on Mobile */
   .toast-container {
-    bottom: 70px; /* Above the bottom footer tabs */
+    bottom: 70px;
+    /* Above the bottom footer tabs */
     right: 16px;
     left: 16px;
     width: auto;
@@ -3373,7 +3459,8 @@ body.light-theme .preset-chip:hover {
   margin-bottom: 4px;
 }
 
-.concept-thumb-visual, .concept-twist-text {
+.concept-thumb-visual,
+.concept-twist-text {
   font-size: 12.5px;
   color: var(--text-secondary);
   margin: 0;
@@ -3803,6 +3890,3 @@ body.light-theme .tag-link:hover {
   background: #dc2626 !important;
   color: #ffffff !important;
 }
-
-
-
