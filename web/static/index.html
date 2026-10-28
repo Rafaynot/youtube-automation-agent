@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,17 @@
   <title>YouTube Agent Studio - Fear Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="dark-theme">
   <!-- Main App Shell -->
   <div class="app-layout">
-    
+
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
       <div class="brand">
@@ -30,7 +34,8 @@
       <!-- Channel Quick Status -->
       <div class="channel-card-mini" id="sidebar-channel-card">
         <div class="channel-avatar" id="ch-avatar">
-          <img src="/fear_studio_pfp.jpg" alt="Fear Studio" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+          <img src="/fear_studio_pfp.jpg" alt="Fear Studio" onerror="this.src='/fear_studio_pfp.jpg'"
+            referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
         </div>
         <div class="channel-details">
           <div class="channel-name" id="ch-name">Fear Studio</div>
@@ -66,7 +71,9 @@
         <button class="nav-item" data-tab="tab-skill-lab" id="nav-btn-skill-lab">
           <i class="fa-solid fa-brain"></i>
           <span>AI Skills Lab</span>
-          <span class="pill-badge badge-glow" style="background: rgba(6,182,212,0.25); color:#06b6d4; font-weight:700;">11 SKILLS</span>
+          <span class="pill-badge badge-glow"
+            style="background: rgba(6,182,212,0.25); color:#06b6d4; font-weight:700;">11
+            SKILLS</span>
         </button>
         <button class="nav-item" data-tab="tab-script" id="nav-btn-script">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -101,7 +108,8 @@
         <button class="nav-item" data-tab="tab-research" id="nav-btn-research">
           <i class="fa-solid fa-satellite-dish"></i>
           <span>Live Spy & Radar</span>
-          <span class="pill-badge badge-glow" style="background: rgba(255,69,0,0.25); color:#ff4500; font-weight:700;">NEW</span>
+          <span class="pill-badge badge-glow"
+            style="background: rgba(255,69,0,0.25); color:#ff4500; font-weight:700;">NEW</span>
         </button>
 
         <div class="nav-section-label">PRODUCTION & STRATEGY</div>
@@ -139,11 +147,12 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      
+
       <!-- Top Navigation Bar -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="btn btn-secondary mobile-menu-btn" id="btn-mobile-menu" aria-label="Toggle Navigation Drawer" title="Open Menu">
+          <button class="btn btn-secondary mobile-menu-btn" id="btn-mobile-menu" aria-label="Toggle Navigation Drawer"
+            title="Open Menu">
             <i class="fa-solid fa-bars"></i>
           </button>
           <div class="topbar-title">
@@ -170,12 +179,17 @@
           <div class="channel-profile-card" id="hub-channel-card">
             <!-- 1. Real YouTube Cover Photo Banner -->
             <div class="channel-cover-banner" id="hub-cover-banner">
-              <img id="hub-cover-img" class="banner-cover-img" src="/fear_studio_banner.jpg" alt="Fear Studio Banner" onerror="this.src='/fear_studio_banner.jpg'" referrerpolicy="no-referrer">
+              <img id="hub-cover-img" class="banner-cover-img" src="/fear_studio_banner.jpg" alt="Fear Studio Banner"
+                onerror="this.src='/fear_studio_banner.jpg'" referrerpolicy="no-referrer">
               <div class="banner-gradient-overlay"></div>
               <div class="banner-top-actions">
-                <span class="live-pill"><span class="pulse-dot"></span> <span id="hub-sync-status-text">YouTube Live Sync Active</span></span>
-                <button class="btn btn-sm btn-glass-blur" id="btn-refresh-channel-live" title="Refresh live channel numbers from YouTube">
-                  <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i> <span id="refresh-btn-label">Sync Live Data</span>
+                <span class="live-pill"><span class="pulse-dot"></span> <span id="hub-sync-status-text">YouTube Live
+                    Sync
+                    Active</span></span>
+                <button class="btn btn-sm btn-glass-blur" id="btn-refresh-channel-live"
+                  title="Refresh live channel numbers from YouTube">
+                  <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i> <span id="refresh-btn-label">Sync Live
+                    Data</span>
                 </button>
               </div>
             </div>
@@ -183,7 +197,8 @@
             <!-- 2. Hero Content with Floating Circular PFP Avatar -->
             <div class="channel-hero-content">
               <div class="hero-avatar-wrapper">
-                <img id="hub-avatar-img" class="hero-avatar-img" src="/fear_studio_pfp.jpg" alt="Fear Studio PFP" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer">
+                <img id="hub-avatar-img" class="hero-avatar-img" src="/fear_studio_pfp.jpg" alt="Fear Studio PFP"
+                  onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer">
                 <span class="avatar-status-badge" title="Active & Verified"><i class="fa-solid fa-check"></i></span>
               </div>
               <div class="hero-details">
@@ -192,14 +207,19 @@
                   <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Active Channel</span>
                   <span class="badge-tag" id="hub-handle-tag">@FearStudio96</span>
                 </div>
-                <p class="hero-desc" id="hub-channel-desc">Welcome to Fear Studio — dark, atmospheric horror and true scary storytelling.</p>
+                <p class="hero-desc" id="hub-channel-desc">Welcome to Fear Studio — dark, atmospheric horror and true
+                  scary storytelling.</p>
                 <div class="hero-tags">
-                  <span class="tag tag-subs" id="hub-tag-subs"><i class="fa-solid fa-users"></i> <strong id="hub-subscriber-count">120</strong> Subscribers</span>
-                  <span class="tag" id="hub-tag-videos"><i class="fa-solid fa-video"></i> <strong id="hub-video-count">39</strong> Videos</span>
-                  <span class="tag tag-lifetime" id="hub-tag-views"><i class="fa-solid fa-fire"></i> <strong id="hub-lifetime-views">67.9K</strong> Views</span>
+                  <span class="tag tag-subs" id="hub-tag-subs"><i class="fa-solid fa-users"></i> <strong
+                      id="hub-subscriber-count">120</strong> Subscribers</span>
+                  <span class="tag" id="hub-tag-videos"><i class="fa-solid fa-video"></i> <strong
+                      id="hub-video-count">39</strong> Videos</span>
+                  <span class="tag tag-lifetime" id="hub-tag-views"><i class="fa-solid fa-fire"></i> <strong
+                      id="hub-lifetime-views">67.9K</strong> Views</span>
                   <span class="tag"><i class="fa-solid fa-masks-theater"></i> Dark / Horror Storytelling</span>
                   <a href="https://www.youtube.com/@FearStudio96" target="_blank" class="tag tag-link" id="hub-yt-link">
-                    <i class="fa-brands fa-youtube"></i> Open YouTube <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <i class="fa-brands fa-youtube"></i> Open YouTube <i
+                      class="fa-solid fa-arrow-up-right-from-square"></i>
                   </a>
                 </div>
               </div>
@@ -210,7 +230,8 @@
           <div class="studio-stat-banner" id="hub-studio-banner">
             <div class="stat-banner-header">
               <div class="banner-title-group">
-                <span><i class="fa-solid fa-bolt" style="color: #ff2b55;"></i> Official YouTube Studio Analytics (Live)</span>
+                <span><i class="fa-solid fa-bolt" style="color: #ff2b55;"></i> Official YouTube Studio Analytics
+                  (Live)</span>
                 <span class="live-pill"><span class="pulse-dot"></span> Google OAuth Connected</span>
               </div>
               <div class="date-filter-wrap">
@@ -226,7 +247,8 @@
             </div>
             <div class="stat-banner-grid">
               <div class="banner-stat-item">
-                <span class="stat-lbl"><i class="fa-solid fa-eye"></i> Views (<span class="banner-period-label">28d</span>)</span>
+                <span class="stat-lbl"><i class="fa-solid fa-eye"></i> Views (<span
+                    class="banner-period-label">28d</span>)</span>
                 <strong class="stat-val" id="hub-stat-views">2,701</strong>
               </div>
               <div class="banner-stat-item">
@@ -285,7 +307,8 @@
             <div class="input-group">
               <label for="hook-input">Spoken Opening Line (First 10-15 seconds)</label>
               <div class="input-with-button">
-                <input type="text" id="hook-input" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
+                <input type="text" id="hook-input"
+                  placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
                 <button class="btn btn-primary" id="btn-score-hook">
                   <i class="fa-solid fa-bolt"></i> Score Hook
                 </button>
@@ -295,15 +318,18 @@
             <!-- Hook Presets -->
             <div class="hook-presets">
               <span class="preset-label">Test Real Channel Titles:</span>
-              <button class="preset-chip" data-hook="Something was wrong with my uncle's house the moment I entered.">Uncle's House</button>
-              <button class="preset-chip" data-hook="Every eldest child in our family dies at 21, and today is my birthday.">Eldest at 21</button>
-              <button class="preset-chip" data-hook="I stayed in school after midnight, and realized I was not alone.">School Midnight</button>
+              <button class="preset-chip"
+                data-hook="Something was wrong with my uncle's house the moment I entered.">Uncle's House</button>
+              <button class="preset-chip"
+                data-hook="Every eldest child in our family dies at 21, and today is my birthday.">Eldest at 21</button>
+              <button class="preset-chip"
+                data-hook="I stayed in school after midnight, and realized I was not alone.">School Midnight</button>
             </div>
 
             <!-- Score Results Container -->
             <div class="score-results hidden" id="hook-results-panel">
               <div class="results-grid">
-                
+
                 <!-- Left: Overall Verdict Card -->
                 <div class="verdict-card" id="verdict-box">
                   <div class="verdict-label">FINAL VERDICT</div>
@@ -321,7 +347,7 @@
                 <!-- Right: 5 Properties Breakdown Bars -->
                 <div class="properties-card">
                   <h4>5-Property Diagnostics (Weakest Link Weighted)</h4>
-                  
+
                   <div class="prop-bar-item">
                     <div class="prop-header">
                       <span><i class="fa-solid fa-hashtag"></i> SPECIFICITY (Numbers, names, dates)</span>
@@ -384,14 +410,17 @@
             <div class="panel-header">
               <div>
                 <h3>Title & Thumbnail Packaging Linter</h3>
-                <p>The title and thumbnail are ONE unit. Checks 60/40 truncation, word duplication, and vague adjectives.</p>
+                <p>The title and thumbnail are ONE unit. Checks 60/40 truncation, word duplication, and vague
+                  adjectives.
+                </p>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-col">
                 <label for="input-title">Video Title</label>
-                <input type="text" id="input-title" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone">
+                <input type="text" id="input-title"
+                  placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone">
                 <div class="char-counter">
                   <span id="title-char-count">0</span> characters (Desktop cut: 60 | Mobile cut: 40)
                 </div>
@@ -414,7 +443,7 @@
             <!-- Live Previews -->
             <div class="packaging-results hidden" id="title-results-panel">
               <div class="lint-grid">
-                
+
                 <!-- Left: Lint Diagnostics -->
                 <div class="lint-report">
                   <div class="score-pill-row">
@@ -463,13 +492,15 @@
               <div>
                 <div class="panel-badge-pill"><i class="fa-solid fa-sparkles"></i> LIVE GEMINI AI ENGINE</div>
                 <h3>AI Skills Lab (Universal 11-Skill Runner)</h3>
-                <p>Run any of the 11 YouTube Agent skills directly in the UI with identical CLI terminal fidelity, voice calibration, and retention guardrails.</p>
+                <p>Run any of the 11 YouTube Agent skills directly in the UI with identical CLI terminal fidelity, voice
+                  calibration, and retention guardrails.</p>
               </div>
             </div>
 
             <!-- 11 Skills Interactive Grid -->
             <div class="skills-selector-grid" id="skills-pill-grid">
-              <button class="skill-pill-card active" data-skill="yt-script" data-desc="Generates 5 hooks off the 21 formulas, scores them, and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.">
+              <button class="skill-pill-card active" data-skill="yt-script"
+                data-desc="Generates 5 hooks off the 21 formulas, scores them, and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.">
                 <div class="pill-icon"><i class="fa-solid fa-scroll"></i></div>
                 <div class="pill-text">
                   <strong>yt-script</strong>
@@ -477,7 +508,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-package" data-desc="Title + thumbnail pairing linter. Checks mobile character truncation, thumbnail 3-word rule, duplication, and clickability.">
+              <button class="skill-pill-card" data-skill="yt-package"
+                data-desc="Title + thumbnail pairing linter. Checks mobile character truncation, thumbnail 3-word rule, duplication, and clickability.">
                 <div class="pill-icon"><i class="fa-solid fa-tag"></i></div>
                 <div class="pill-text">
                   <strong>yt-package</strong>
@@ -485,7 +517,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-seo" data-desc="Search-driven 2-line snippet above the fold, 3 exact target queries to win, and 12-15 disambiguation tags.">
+              <button class="skill-pill-card" data-skill="yt-seo"
+                data-desc="Search-driven 2-line snippet above the fold, 3 exact target queries to win, and 12-15 disambiguation tags.">
                 <div class="pill-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
                 <div class="pill-text">
                   <strong>yt-seo</strong>
@@ -493,7 +526,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-shorts" data-desc="Find the Shorts hiding inside a long video or premise. Extracts 3 self-contained vertical clips with 0-3s hooks.">
+              <button class="skill-pill-card" data-skill="yt-shorts"
+                data-desc="Find the Shorts hiding inside a long video or premise. Extracts 3 self-contained vertical clips with 0-3s hooks.">
                 <div class="pill-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
                 <div class="pill-text">
                   <strong>yt-shorts</strong>
@@ -501,7 +535,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-plan" data-desc="4-week upload calendar prioritized into 4 tiers (Evergreen, Core, Trend, Outlier) matched to creator hours.">
+              <button class="skill-pill-card" data-skill="yt-plan"
+                data-desc="4-week upload calendar prioritized into 4 tiers (Evergreen, Core, Trend, Outlier) matched to creator hours.">
                 <div class="pill-icon"><i class="fa-solid fa-calendar-check"></i></div>
                 <div class="pill-text">
                   <strong>yt-plan</strong>
@@ -509,7 +544,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-comment" data-desc="Triages YouTube comments into 4 piles and drafts authentic replies in Fear Studio's calm, dark voice.">
+              <button class="skill-pill-card" data-skill="yt-comment"
+                data-desc="Triages YouTube comments into 4 piles and drafts authentic replies in Fear Studio's calm, dark voice.">
                 <div class="pill-icon"><i class="fa-solid fa-comments"></i></div>
                 <div class="pill-text">
                   <strong>yt-comment</strong>
@@ -517,7 +553,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-viral" data-desc="Identifies outlier viral videos in your niche by channel median multiple and names the winning formula.">
+              <button class="skill-pill-card" data-skill="yt-viral"
+                data-desc="Identifies outlier viral videos in your niche by channel median multiple and names the winning formula.">
                 <div class="pill-icon"><i class="fa-solid fa-fire"></i></div>
                 <div class="pill-text">
                   <strong>yt-viral</strong>
@@ -525,7 +562,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-retention" data-desc="Audience retention diagnostic. Analyzes Hook Leak (0-15s drop), sudden cliffs, slide bleed, and fixes.">
+              <button class="skill-pill-card" data-skill="yt-retention"
+                data-desc="Audience retention diagnostic. Analyzes Hook Leak (0-15s drop), sudden cliffs, slide bleed, and fixes.">
                 <div class="pill-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
                 <div class="pill-text">
                   <strong>yt-retention</strong>
@@ -533,7 +571,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-audit" data-desc="Channel audit ending in ONE decisive action this week instead of twenty distractions.">
+              <button class="skill-pill-card" data-skill="yt-audit"
+                data-desc="Channel audit ending in ONE decisive action this week instead of twenty distractions.">
                 <div class="pill-icon"><i class="fa-solid fa-stethoscope"></i></div>
                 <div class="pill-text">
                   <strong>yt-audit</strong>
@@ -541,7 +580,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-chapters" data-desc="Validates and writes YouTube chapter timestamps starting at 00:00 with 10s minimum spacing.">
+              <button class="skill-pill-card" data-skill="yt-chapters"
+                data-desc="Validates and writes YouTube chapter timestamps starting at 00:00 with 10s minimum spacing.">
                 <div class="pill-icon"><i class="fa-solid fa-list-check"></i></div>
                 <div class="pill-text">
                   <strong>yt-chapters</strong>
@@ -549,7 +589,8 @@
                 </div>
               </button>
 
-              <button class="skill-pill-card" data-skill="yt-edit" data-desc="Turns raw recording transcript into an Edit Decision List: dead air cuts, filler cues ('um'/'uh'), and retakes.">
+              <button class="skill-pill-card" data-skill="yt-edit"
+                data-desc="Turns raw recording transcript into an Edit Decision List: dead air cuts, filler cues ('um'/'uh'), and retakes.">
                 <div class="pill-icon"><i class="fa-solid fa-scissors"></i></div>
                 <div class="pill-text">
                   <strong>yt-edit</strong>
@@ -561,7 +602,9 @@
             <!-- Active Skill Overview Banner -->
             <div class="active-skill-info-banner">
               <div class="skill-banner-badge" id="lab-active-skill-badge">yt-script</div>
-              <p class="skill-banner-desc" id="lab-active-skill-desc">Generates 5 hooks off the 21 formulas, scores them, and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.</p>
+              <p class="skill-banner-desc" id="lab-active-skill-desc">Generates 5 hooks off the 21 formulas, scores
+                them,
+                and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.</p>
             </div>
 
             <!-- Skill Input Box -->
@@ -595,13 +638,14 @@
                 </div>
               </div>
               <div class="script-content-pre" id="lab-result-text"></div>
-              
+
               <!-- Gate Question -->
               <div class="gate-bar">
                 <span class="gate-title">The Gate Question:</span>
                 <span style="color:var(--text-secondary);">Nothing here publishes without your signoff.</span>
                 <div class="gate-buttons">
-                  <button class="btn btn-success" id="btn-lab-ship" onclick="showToast('Approved! Ready to produce and publish.', 'success')">
+                  <button class="btn btn-success" id="btn-lab-ship"
+                    onclick="showToast('Approved! Ready to produce and publish.', 'success')">
                     <i class="fa-solid fa-check"></i> Ship It!
                   </button>
                   <button class="btn btn-secondary" onclick="document.getElementById('lab-skill-input').focus()">
@@ -620,13 +664,15 @@
             <div class="panel-header">
               <div>
                 <h3>AI Script Studio (yt-script)</h3>
-                <p>Generates 5 hooks off the 21 formulas, scores them, and writes spoken scripts matching Fear Studio's dark voice.</p>
+                <p>Generates 5 hooks off the 21 formulas, scores them, and writes spoken scripts matching Fear Studio's
+                  dark voice.</p>
               </div>
             </div>
 
             <div class="input-group">
               <label for="script-topic">Your Video Idea or Topic</label>
-              <textarea id="script-topic" rows="3" placeholder="e.g. A true horror story about an abandoned midnight hospital where the emergency room monitor still beeps..."></textarea>
+              <textarea id="script-topic" rows="3"
+                placeholder="e.g. A true horror story about an abandoned midnight hospital where the emergency room monitor still beeps..."></textarea>
             </div>
 
             <div class="action-bar">
@@ -649,7 +695,7 @@
                 </div>
               </div>
               <div class="script-content-pre" id="script-text-body"></div>
-              
+
               <!-- Gate Question -->
               <div class="gate-bar">
                 <span class="gate-title">The Gate:</span>
@@ -674,7 +720,8 @@
             <div class="panel-header">
               <div>
                 <h3>YouTube Chapters & Dead-Air Editor</h3>
-                <p>Paste your .srt transcript to generate YouTube-compliant chapters (starts at 00:00, 10s min) or find dead air cuts.</p>
+                <p>Paste your .srt transcript to generate YouTube-compliant chapters (starts at 00:00, 10s min) or find
+                  dead air cuts.</p>
               </div>
             </div>
 
@@ -757,15 +804,17 @@ The house on the hill has been empty for over twenty years."></textarea>
 
         <!-- TAB 7: STUDIO ANALYTICS (OAuth 2.0) -->
         <section class="tab-pane" id="tab-studio">
-          
+
           <!-- State 1: Connected Live Metrics & Studio Dashboard -->
           <div class="panel-card hidden" id="studio-connected-card">
-            
+
             <!-- Channel Overview Header Strip -->
             <div class="studio-channel-header">
               <div class="studio-header-left">
                 <div class="studio-avatar" id="studio-ch-avatar">
-                  <img src="/fear_studio_pfp.jpg" alt="Fear Studio" class="studio-avatar-img" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                  <img src="/fear_studio_pfp.jpg" alt="Fear Studio" class="studio-avatar-img"
+                    onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer"
+                    style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
                 </div>
                 <div class="studio-ch-info">
                   <div class="studio-name-row">
@@ -773,10 +822,14 @@ The house on the hill has been empty for over twenty years."></textarea>
                     <span class="studio-badge-verified"><i class="fa-solid fa-circle-check"></i> Connected</span>
                   </div>
                   <div class="studio-meta-badges">
-                    <span class="studio-meta-item"><i class="fa-solid fa-users" style="color: #ff2b55;"></i> <strong id="studio-overview-subs">120 subscribers</strong></span>
-                    <span class="studio-meta-item"><i class="fa-solid fa-video"></i> <strong id="studio-overview-videos">39 videos</strong></span>
-                    <span class="studio-meta-item"><i class="fa-solid fa-fire" style="color: #f59e0b;"></i> <strong id="studio-overview-lifetime-views">67,935</strong> Lifetime Views</span>
-                    <span class="studio-meta-item"><i class="fa-solid fa-clock"></i> <strong id="studio-overview-lifetime-hours">165.7 hrs</strong> Lifetime Watch Time</span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-users" style="color: #ff2b55;"></i> <strong
+                        id="studio-overview-subs">120 subscribers</strong></span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-video"></i> <strong
+                        id="studio-overview-videos">39 videos</strong></span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-fire" style="color: #f59e0b;"></i> <strong
+                        id="studio-overview-lifetime-views">67,935</strong> Lifetime Views</span>
+                    <span class="studio-meta-item"><i class="fa-solid fa-clock"></i> <strong
+                        id="studio-overview-lifetime-hours">165.7 hrs</strong> Lifetime Watch Time</span>
                   </div>
                 </div>
               </div>
@@ -890,7 +943,9 @@ The house on the hill has been empty for over twenty years."></textarea>
                     </tr>
                   </thead>
                   <tbody id="studio-top-videos-body">
-                    <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading top videos...</td></tr>
+                    <tr>
+                      <td colspan="6" style="text-align:center; padding: 20px;">Loading top videos...</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -905,15 +960,19 @@ The house on the hill has been empty for over twenty years."></textarea>
               <div class="guide-grid">
                 <div class="guide-box">
                   <strong>The 0:15 Cold Open</strong>
-                  <p>Target >70% retention at 30 seconds. Do not insert logos or channel intros. Jump straight into the eerie setup.</p>
+                  <p>Target >70% retention at 30 seconds. Do not insert logos or channel intros. Jump straight into the
+                    eerie setup.</p>
                 </div>
                 <div class="guide-box">
                   <strong>Pacing Beats (130-145 wpm)</strong>
-                  <p>Horror requires breathing room. Slow down deliberately before reveal moments to build suffocating tension.</p>
+                  <p>Horror requires breathing room. Slow down deliberately before reveal moments to build suffocating
+                    tension.</p>
                 </div>
                 <div class="guide-box">
                   <strong>Thumbnail Pairing</strong>
-                  <p>Avoid duplicating title words on the thumbnail image. 3 words max on thumb (e.g. "DON'T LOOK BACK").</p>
+                  <p>Avoid duplicating title words on the thumbnail image. 3 words max on thumb (e.g. "DON'T LOOK
+                    BACK").
+                  </p>
                 </div>
               </div>
             </div>
@@ -925,7 +984,8 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="panel-header">
               <div>
                 <h3>Connect Official YouTube Studio API (OAuth 2.0)</h3>
-                <p>Fetch your private watch time, retention curves, CTR, and real-time subscriber conversions directly from Google.</p>
+                <p>Fetch your private watch time, retention curves, CTR, and real-time subscriber conversions directly
+                  from Google.</p>
               </div>
             </div>
 
@@ -934,7 +994,10 @@ The house on the hill has been empty for over twenty years."></textarea>
                 <div class="step-num">1</div>
                 <div class="step-content">
                   <h4>Enable YouTube Analytics API on Google Cloud (Free)</h4>
-                  <p>Visit <a href="https://console.cloud.google.com/apis/library/youtubeanalytics.googleapis.com" target="_blank">Google Cloud Console</a> and click <strong>Enable</strong> for YouTube Analytics API & YouTube Data API v3.</p>
+                  <p>Visit <a href="https://console.cloud.google.com/apis/library/youtubeanalytics.googleapis.com"
+                      target="_blank">Google Cloud Console</a> and click <strong>Enable</strong> for YouTube Analytics
+                    API
+                    & YouTube Data API v3.</p>
                 </div>
               </div>
 
@@ -942,7 +1005,10 @@ The house on the hill has been empty for over twenty years."></textarea>
                 <div class="step-num">2</div>
                 <div class="step-content">
                   <h4>Create OAuth 2.0 Client ID</h4>
-                  <p>Go to <strong>APIs & Services -> Credentials -> Create Credentials -> OAuth client ID</strong>. Select <em>Desktop app</em> (or Web application with redirect URI: <code>http://localhost:8088/callback</code>).</p>
+                  <p>Go to <strong>APIs & Services -> Credentials -> Create Credentials -> OAuth client ID</strong>.
+                    Select <em>Desktop app</em> (or Web application with redirect URI:
+                    <code>http://localhost:8088/callback</code>).
+                  </p>
                 </div>
               </div>
 
@@ -968,7 +1034,8 @@ The house on the hill has been empty for over twenty years."></textarea>
                       <i class="fa-brands fa-google"></i> Sign In With Google & Authorize
                     </button>
                   </div>
-                  <p class="modal-hint" style="margin-top: 8px;">Or copy your downloaded <code>client_secret.json</code> file into <code>config/client_secret.json</code>.</p>
+                  <p class="modal-hint" style="margin-top: 8px;">Or copy your downloaded <code>client_secret.json</code>
+                    file into <code>config/client_secret.json</code>.</p>
                 </div>
               </div>
             </div>
@@ -983,7 +1050,8 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="panel-header">
               <div>
                 <h3>End-to-End Channel Audit (yt-audit)</h3>
-                <p>Audits packaging, mobile truncation, titles, and hook retention to deliver the ONE single biggest fix for this week.</p>
+                <p>Audits packaging, mobile truncation, titles, and hook retention to deliver the ONE single biggest fix
+                  for this week.</p>
               </div>
               <button class="btn btn-primary" id="btn-run-audit">
                 <i class="fa-solid fa-stethoscope"></i> Run Audit Now
@@ -1004,9 +1072,11 @@ The house on the hill has been empty for over twenty years."></textarea>
           <div class="panel-card glass-panel">
             <div class="panel-header">
               <div>
-                <div class="panel-badge-pill" style="background:rgba(245,158,11,0.2); color:#f59e0b;"><i class="fa-solid fa-chart-line"></i> DIAGNOSTIC ENGINE</div>
+                <div class="panel-badge-pill" style="background:rgba(245,158,11,0.2); color:#f59e0b;"><i
+                    class="fa-solid fa-chart-line"></i> DIAGNOSTIC ENGINE</div>
                 <h3>Audience Retention Curve Analysis (yt-retention)</h3>
-                <p>Read YouTube Studio retention CSV data to isolate the 3 critical retention leaks: <strong>Hook Leak (0:00-0:15)</strong>, <strong>Drop Cliffs</strong>, and <strong>Slide Bleed</strong>.</p>
+                <p>Read YouTube Studio retention CSV data to isolate the 3 critical retention leaks: <strong>Hook Leak
+                    (0:00-0:15)</strong>, <strong>Drop Cliffs</strong>, and <strong>Slide Bleed</strong>.</p>
               </div>
             </div>
 
@@ -1055,14 +1125,16 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="panel-header">
               <div>
                 <h3>Search SEO & Tags Studio (yt-seo)</h3>
-                <p>Generate high-intent 2-line description snippets, 3 query targets, and focused disambiguation tags.</p>
+                <p>Generate high-intent 2-line description snippets, 3 query targets, and focused disambiguation tags.
+                </p>
               </div>
             </div>
 
             <div class="input-group">
               <label for="seo-input-topic">Video Title or Premise</label>
               <div class="input-with-button">
-                <input type="text" id="seo-input-topic" placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
+                <input type="text" id="seo-input-topic"
+                  placeholder="e.g. 3 Creepy Trick-or-Treating Stories You Shouldn't Hear Alone" autocomplete="off">
                 <button class="btn btn-primary" id="btn-gen-seo">
                   <i class="fa-solid fa-magnifying-glass-chart"></i> Generate SEO Package
                 </button>
@@ -1087,13 +1159,15 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="panel-header">
               <div>
                 <h3>Viral Shorts Extractor (yt-shorts)</h3>
-                <p>Extract 3 self-contained vertical Short concepts with visual hooks and looping endings from any long-form video.</p>
+                <p>Extract 3 self-contained vertical Short concepts with visual hooks and looping endings from any
+                  long-form video.</p>
               </div>
             </div>
 
             <div class="input-group">
               <label for="shorts-input-text">Story Premise, Transcript, or Outline</label>
-              <textarea id="shorts-input-text" rows="4" placeholder="e.g. An encounter at an abandoned mountain cabin where investigators found a warm meal set on the table, but the only footprints led up to the ceiling..."></textarea>
+              <textarea id="shorts-input-text" rows="4"
+                placeholder="e.g. An encounter at an abandoned mountain cabin where investigators found a warm meal set on the table, but the only footprints led up to the ceiling..."></textarea>
             </div>
 
             <div class="action-bar">
@@ -1113,9 +1187,11 @@ The house on the hill has been empty for over twenty years."></textarea>
           <div class="panel-card glass-panel">
             <div class="panel-header">
               <div>
-                <div class="panel-badge-pill" style="background:rgba(255,43,85,0.2); color:#ff2b55;"><i class="fa-solid fa-fire"></i> OUTLIER DETECTOR</div>
+                <div class="panel-badge-pill" style="background:rgba(255,43,85,0.2); color:#ff2b55;"><i
+                    class="fa-solid fa-fire"></i> OUTLIER DETECTOR</div>
                 <h3>Viral Outliers & Swipe File (yt-viral)</h3>
-                <p>Find what is actually outperforming in your niche by channel median multiple, and extract the viral packaging formula.</p>
+                <p>Find what is actually outperforming in your niche by channel median multiple, and extract the viral
+                  packaging formula.</p>
               </div>
             </div>
 
@@ -1127,7 +1203,8 @@ The house on the hill has been empty for over twenty years."></textarea>
                     <i class="fa-solid fa-folder-open"></i> Load Horror Swipe Dataset
                   </button>
                 </div>
-                <textarea id="viral-json-input" rows="6" placeholder='[{"channel":"CreepCast","title":"I Investigated a Radio Station That Does Not Exist","views":850000,"url":"https://youtube.com/..."}, ...]'></textarea>
+                <textarea id="viral-json-input" rows="6"
+                  placeholder='[{"channel":"CreepCast","title":"I Investigated a Radio Station That Does Not Exist","views":850000,"url":"https://youtube.com/..."}, ...]'></textarea>
               </div>
               <div class="form-col" style="flex:1;">
                 <label for="viral-multiplier-select">Min. Outlier Multiple</label>
@@ -1137,7 +1214,9 @@ The house on the hill has been empty for over twenty years."></textarea>
                   <option value="3.0">3.0x (Viral Breakout)</option>
                   <option value="5.0">5.0x (Extreme Outlier)</option>
                 </select>
-                <p class="sub-text" style="margin-top:10px;">Videos must beat their OWN channel median views to prove the idea, not just channel size.</p>
+                <p class="sub-text" style="margin-top:10px;">Videos must beat their OWN channel median views to prove
+                  the
+                  idea, not just channel size.</p>
               </div>
             </div>
 
@@ -1168,22 +1247,27 @@ The house on the hill has been empty for over twenty years."></textarea>
                   <i class="fa-solid fa-satellite-dish"></i> VIRAL RADAR & DISCOVERY
                 </div>
                 <h3>Live Competitor Spy & Reddit Radar</h3>
-                <p>Scrape real-time viral horror stories from Reddit communities and spy on top competitor video performance to auto-synthesize original video concepts.</p>
+                <p>Scrape real-time viral horror stories from Reddit communities and spy on top competitor video
+                  performance to auto-synthesize original video concepts.</p>
               </div>
             </div>
 
             <!-- Two Column Research Controls -->
             <div class="form-row">
               <!-- Left: Reddit Live Scraper -->
-              <div class="form-col" style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+              <div class="form-col"
+                style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <h4 style="margin:0; font-size:14px; color:#ff4500;"><i class="fa-brands fa-reddit"></i> Reddit Viral Story Radar</h4>
-                  <span class="pill-badge" id="reddit-count-badge" style="background: rgba(255,69,0,0.15); color:#ff4500;">Live Feed</span>
+                  <h4 style="margin:0; font-size:14px; color:#ff4500;"><i class="fa-brands fa-reddit"></i> Reddit Viral
+                    Story Radar</h4>
+                  <span class="pill-badge" id="reddit-count-badge"
+                    style="background: rgba(255,69,0,0.15); color:#ff4500;">Live Feed</span>
                 </div>
-                
+
                 <div style="display:flex; gap:10px; margin-bottom:12px;">
                   <div style="flex:2;">
-                    <label style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Subreddit</label>
+                    <label
+                      style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Subreddit</label>
                     <select id="research-reddit-sub" class="studio-select" style="width:100%; margin-top:4px;">
                       <option value="nosleep" selected>r/NoSleep (Viral Horror Fiction)</option>
                       <option value="LetsNotMeet">r/LetsNotMeet (True Creepy Encounters)</option>
@@ -1193,7 +1277,8 @@ The house on the hill has been empty for over twenty years."></textarea>
                     </select>
                   </div>
                   <div style="flex:1;">
-                    <label style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Timeframe</label>
+                    <label
+                      style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Timeframe</label>
                     <select id="research-reddit-time" class="studio-select" style="width:100%; margin-top:4px;">
                       <option value="week" selected>This Week</option>
                       <option value="month">This Month</option>
@@ -1208,22 +1293,27 @@ The house on the hill has been empty for over twenty years."></textarea>
               </div>
 
               <!-- Right: Competitor Channel Spy -->
-              <div class="form-col" style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+              <div class="form-col"
+                style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <h4 style="margin:0; font-size:14px; color:#ff0033;"><i class="fa-brands fa-youtube"></i> Competitor Channel Spy</h4>
-                  <span class="pill-badge" id="competitor-status-badge" style="background: rgba(255,0,51,0.15); color:#ff0033;">Public Radar</span>
+                  <h4 style="margin:0; font-size:14px; color:#ff0033;"><i class="fa-brands fa-youtube"></i> Competitor
+                    Channel Spy</h4>
+                  <span class="pill-badge" id="competitor-status-badge"
+                    style="background: rgba(255,0,51,0.15); color:#ff0033;">Public Radar</span>
                 </div>
 
                 <div class="preset-chips-wrap" style="margin-bottom:8px;">
                   <span style="font-size:11px; color:var(--text-muted);">Quick Presets:</span>
-                  <button type="button" class="preset-chip comp-preset-btn" data-handle="@MrNightmare">@MrNightmare</button>
+                  <button type="button" class="preset-chip comp-preset-btn"
+                    data-handle="@MrNightmare">@MrNightmare</button>
                   <button type="button" class="preset-chip comp-preset-btn" data-handle="@BeBusta">@BeBusta</button>
                   <button type="button" class="preset-chip comp-preset-btn" data-handle="@CreepCast">@CreepCast</button>
                   <button type="button" class="preset-chip comp-preset-btn" data-handle="@Unit522">@Unit522</button>
                 </div>
 
                 <div style="display:flex; gap:8px;">
-                  <input type="text" id="research-competitor-input" placeholder="e.g. @MrNightmare or Channel URL" value="@MrNightmare" style="flex:1;">
+                  <input type="text" id="research-competitor-input" placeholder="e.g. @MrNightmare or Channel URL"
+                    value="@MrNightmare" style="flex:1;">
                   <button class="btn btn-secondary" id="btn-spy-competitor">
                     <i class="fa-solid fa-magnifying-glass"></i> Spy
                   </button>
@@ -1232,11 +1322,14 @@ The house on the hill has been empty for over twenty years."></textarea>
             </div>
 
             <!-- Big Synthesis Action Bar -->
-            <div class="action-bar" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div class="action-bar"
+              style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
               <div>
-                <span style="font-size:13px; color:var(--text-secondary);"><i class="fa-solid fa-wand-magic-sparkles" style="color:#06b6d4;"></i> Gemini AI analyzes live scraped trends into Fear Studio concepts:</span>
+                <span style="font-size:13px; color:var(--text-secondary);"><i class="fa-solid fa-wand-magic-sparkles"
+                    style="color:#06b6d4;"></i> Gemini AI analyzes live scraped trends into Fear Studio concepts:</span>
               </div>
-              <button class="btn btn-primary btn-glow" id="btn-synthesize-ideas" style="background: linear-gradient(135deg, #ff4500, #ff0055); font-weight:700;">
+              <button class="btn btn-primary btn-glow" id="btn-synthesize-ideas"
+                style="background: linear-gradient(135deg, #ff4500, #ff0055); font-weight:700;">
                 <i class="fa-solid fa-brain"></i> Auto-Generate 5 Viral Video Concepts
               </button>
             </div>
@@ -1244,22 +1337,29 @@ The house on the hill has been empty for over twenty years."></textarea>
             <!-- AI Concepts Container -->
             <div class="hidden" id="research-ideas-box" style="margin-top:24px;">
               <div class="script-header-row" style="margin-bottom:16px;">
-                <h4 style="color:#06b6d4; margin:0;"><i class="fa-solid fa-lightbulb"></i> Synthesized Fear Studio Video Packages (5 Concepts)</h4>
-                <span class="pill-badge badge-glow" style="background: rgba(6,182,212,0.25); color:#06b6d4;">AI CURATED</span>
+                <h4 style="color:#06b6d4; margin:0;"><i class="fa-solid fa-lightbulb"></i> Synthesized Fear Studio Video
+                  Packages (5 Concepts)</h4>
+                <span class="pill-badge badge-glow" style="background: rgba(6,182,212,0.25); color:#06b6d4;">AI
+                  CURATED</span>
               </div>
               <div id="research-ideas-grid" class="research-concepts-grid"></div>
             </div>
 
             <!-- Scraped Raw Feeds Section -->
             <div style="margin-top:28px;">
-              <h4 style="font-size:13px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:12px;">
-                <i class="fa-solid fa-stream"></i> Active Trend Stream (<span id="trend-items-count">0</span> items loaded)
+              <h4
+                style="font-size:13px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:12px;">
+                <i class="fa-solid fa-stream"></i> Active Trend Stream (<span id="trend-items-count">0</span> items
+                loaded)
               </h4>
               <div id="research-feed-container" class="research-feed-cards">
                 <!-- Populated dynamically with Reddit stories and competitor videos -->
-                <div class="empty-state-card" style="text-align:center; padding:30px; background:rgba(0,0,0,0.2); border-radius:8px;">
+                <div class="empty-state-card"
+                  style="text-align:center; padding:30px; background:rgba(0,0,0,0.2); border-radius:8px;">
                   <i class="fa-solid fa-radar fa-2x" style="color:var(--text-muted); margin-bottom:10px;"></i>
-                  <p style="color:var(--text-secondary); margin:0;">Click "Pull Trending Stories" or "Spy" on a competitor to load raw trends.</p>
+                  <p style="color:var(--text-secondary); margin:0;">Click "Pull Trending Stories" or "Spy" on a
+                    competitor
+                    to load raw trends.</p>
                 </div>
               </div>
             </div>
@@ -1306,7 +1406,8 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="panel-header">
               <div>
                 <h3>Comment Responder & 4-Pile Triage (yt-comment)</h3>
-                <p>Triage pasted comments into 4 piles and draft replies matching Fear Studio's calm, atmospheric voice.</p>
+                <p>Triage pasted comments into 4 piles and draft replies matching Fear Studio's calm, atmospheric voice.
+                </p>
               </div>
             </div>
 
@@ -1344,8 +1445,10 @@ Where can I learn more about the uncle's house?"></textarea>
       </div>
       <div class="modal-body">
         <label for="modal-input-url">Channel URL or Handle</label>
-        <input type="text" id="modal-input-url" placeholder="https://www.youtube.com/@FearStudio96" value="https://www.youtube.com/@FearStudio96">
-        <p class="modal-hint">We fetch public titles, metadata, and adapt the voice profile automatically without requiring any login credentials.</p>
+        <input type="text" id="modal-input-url" placeholder="https://www.youtube.com/@FearStudio96"
+          value="https://www.youtube.com/@FearStudio96">
+        <p class="modal-hint">We fetch public titles, metadata, and adapt the voice profile automatically without
+          requiring any login credentials.</p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
@@ -1389,4 +1492,5 @@ Where can I learn more about the uncle's house?"></textarea>
 
   <script src="app.js"></script>
 </body>
+
 </html>
