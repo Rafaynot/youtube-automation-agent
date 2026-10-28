@@ -6,6 +6,8 @@ Serves the responsive dashboard and provides REST API endpoints.
 import os
 import sys
 import json
+import time
+import threading
 import urllib.parse
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -17,6 +19,7 @@ from core import engine
 from core import llm
 from core import channel_fetcher
 from core import studio_oauth
+from core import researcher
 from config import resolver
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -41,17 +44,36 @@ class YouTubeAgentHandler(SimpleHTTPRequestHandler):
         path = parsed.path
 
         if path == "/api/status":
+            provider, _ = llm.detect_provider()
             self.send_json({
                 "status": "online",
                 "has_gemini": bool(os.environ.get("GEMINI_API_KEY")),
                 "has_openai": bool(os.environ.get("OPENAI_API_KEY")),
                 "has_groq": bool(os.environ.get("GROQ_API_KEY")),
-                "provider": llm.detect_provider()[0] or "prompt_export_mode"
+                "provider": provider or "prompt_export_mode"
             })
             return
 
         elif path == "/api/channel":
+            query = urllib.parse.parse_qs(parsed.query)
+            should_refresh = query.get("refresh", ["0"])[0] in ["1", "true", "yes"]
             ch_file = ROOT / "config" / "channel.json"
+            
+            if should_refresh:
+                handle = "@FearStudio96"
+                if ch_file.exists():
+                    try:
+                        old = json.loads(ch_file.read_text(encoding="utf-8"))
+                        handle = old.get("handle") or old.get("url") or "@FearStudio96"
+                    except Exception:
+                        pass
+                fresh = channel_fetcher.fetch_channel_data(handle)
+                if "error" not in fresh:
+                    fresh["last_refreshed"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                    channel_fetcher.save_channel_config(fresh)
+                    self.send_json(fresh)
+                    return
+
             if ch_file.exists():
                 try:
                     data = json.loads(ch_file.read_text(encoding="utf-8"))
@@ -195,6 +217,12 @@ class YouTubeAgentHandler(SimpleHTTPRequestHandler):
             skill_instructions = skill_file.read_text(encoding="utf-8")
             voice_content = resolver.load_voice_content()
 
+            extra_context = ""
+            if skill_name == "yt-script":
+                hooks_json = ROOT / "skills" / "yt-script" / "hooks.json"
+                if hooks_json.exists():
+                    extra_context += f"\n\nHOOK FORMULAS REFERENCE:\n{hooks_json.read_text(encoding='utf-8')[:3000]}...\n"
+
             system_prompt = f"""You are an elite YouTube expert acting as the YouTube Agent.
 Follow the skill instructions strictly.
 Do not invent facts, numbers or results.
@@ -204,7 +232,8 @@ Always finish with the gate question: 'ship it, or change it?'.
 {skill_instructions}
 
 === CREATOR VOICE PROFILE ===
-{voice_content}
+{voice_content if voice_content else "No custom voice profile set. Use natural, conversational, punchy creator style."}
+{extra_context}
 """
             provider, _ = llm.detect_provider()
             if provider:
@@ -328,6 +357,65 @@ Always finish with the gate question: 'ship it, or change it?'.
             self.send_json({"retention": out})
             return
 
+        elif path == "/api/swipe":
+            json_text = body.get("json", "").strip()
+            min_mult = float(body.get("min", 1.8))
+            sample_path = ROOT / "skills" / "yt-viral" / "collected.json"
+            temp_json = ROOT / "output" / "temp_swipe.json"
+            temp_json.parent.mkdir(exist_ok=True)
+            
+            if json_text:
+                temp_json.write_text(json_text, encoding="utf-8")
+                target_path = str(temp_json)
+            elif sample_path.exists():
+                target_path = str(sample_path)
+            else:
+                self.send_json({"error": "Video collection JSON is required."}, status=400)
+                return
+
+            out = engine.run_swipe(target_path, min_multiple=min_mult)
+            self.send_json({"swipe": out})
+            return
+
+        elif path == "/api/research/reddit":
+            sub = body.get("subreddit", "nosleep")
+            timeframe = body.get("timeframe", "week")
+            limit = int(body.get("limit", 12))
+            posts = researcher.fetch_reddit_posts(subreddit=sub, timeframe=timeframe, limit=limit)
+            self.send_json({"posts": posts, "subreddit": sub, "timeframe": timeframe})
+            return
+
+        elif path == "/api/research/competitor":
+            handle = body.get("handle", "@MrNightmare").strip()
+            data = researcher.fetch_competitor_videos(handle)
+            self.send_json(data)
+            return
+
+        elif path == "/api/research/ideas":
+            items = body.get("items", [])
+            niche = body.get("niche", "Late-Night Atmospheric Horror Narration")
+            ideas = researcher.synthesize_viral_ideas(items, custom_niche=niche)
+            self.send_json({"ideas": ideas})
+            return
+
+        elif path == "/api/channel/refresh":
+            ch_file = ROOT / "config" / "channel.json"
+            handle = "@FearStudio96"
+            if ch_file.exists():
+                try:
+                    old = json.loads(ch_file.read_text(encoding="utf-8"))
+                    handle = old.get("handle") or old.get("url") or "@FearStudio96"
+                except Exception:
+                    pass
+            fresh = channel_fetcher.fetch_channel_data(handle)
+            if "error" in fresh:
+                self.send_json({"error": fresh["error"]}, status=500)
+                return
+            fresh["last_refreshed"] = time.strftime("%Y-%m-%d %H:%M:%S")
+            channel_fetcher.save_channel_config(fresh)
+            self.send_json(fresh)
+            return
+
         self.send_json({"error": "Endpoint not found"}, status=404)
 
     def send_json(self, data, status=200):
@@ -338,11 +426,33 @@ Always finish with the gate question: 'ship it, or change it?'.
         self.end_headers()
         self.wfile.write(res)
 
+def background_channel_refresher(interval_seconds=300):
+    """Periodically refreshes live channel data from YouTube in the background."""
+    while True:
+        try:
+            time.sleep(interval_seconds)
+            ch_file = ROOT / "config" / "channel.json"
+            if ch_file.exists():
+                old = json.loads(ch_file.read_text(encoding="utf-8"))
+                handle = old.get("handle") or old.get("url") or "@FearStudio96"
+                fresh = channel_fetcher.fetch_channel_data(handle)
+                if "error" not in fresh:
+                    fresh["last_refreshed"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                    channel_fetcher.save_channel_config(fresh)
+                    print(f"[Auto-Sync] Live YouTube stats refreshed for {fresh.get('name')}")
+        except Exception as e:
+            print(f"[Auto-Sync Error]: {e}")
+
 def start_server(port=5000):
-    server = ThreadingHTTPServer(("127.0.0.1", port), YouTubeAgentHandler)
+    # Launch background live YouTube sync thread
+    threading.Thread(target=background_channel_refresher, args=(300,), daemon=True).start()
+    server = ThreadingHTTPServer(("0.0.0.0", port), YouTubeAgentHandler)
     print(f"\n=======================================================")
     print(f"  YOUTUBE AGENT WEB DASHBOARD STARTED")
-    print(f"  URL: http://localhost:{port}")
+    print(f"  LOCAL PC: http://localhost:{port}")
+    print(f"  NETWORK:  http://0.0.0.0:{port}")
+    print(f"  LIVE SYNC: Active (Auto-refreshes every 5 mins)")
+    print(f"  PWA READY: Installable on Mobile & Desktop")
     print(f"=======================================================\n")
     return server
 

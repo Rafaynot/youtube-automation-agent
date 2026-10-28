@@ -11,9 +11,28 @@ import os
 import json
 import urllib.request
 import urllib.error
+from pathlib import Path
+
+def _load_dotenv():
+    env_file = Path(__file__).resolve().parent.parent / ".env"
+    if env_file.exists():
+        try:
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip("'\"")
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+        except Exception:
+            pass
+
+_load_dotenv()
 
 def detect_provider() -> tuple[str | None, str | None]:
     """Detect available provider from environment variables."""
+    _load_dotenv()
     if os.environ.get("GEMINI_API_KEY"):
         return "gemini", os.environ["GEMINI_API_KEY"]
     if os.environ.get("OPENAI_API_KEY"):
@@ -26,8 +45,10 @@ def detect_provider() -> tuple[str | None, str | None]:
         return "ollama", os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     return None, None
 
-def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str = "gemini-2.5-flash") -> str:
+def call_gemini(api_key: str, system_prompt: str, user_prompt: str, model: str | None = None) -> str:
     """Call Google Gemini API."""
+    if not model:
+        model = os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     payload = {
         "system_instruction": {

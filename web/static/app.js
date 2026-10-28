@@ -4,9 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   initMobileNavigation();
   loadChannelData();
+  initChannelLiveSync();
   initHookScorer();
   initTitleLinter();
   initScriptWriter();
+  initSkillsLab();
+  initRetentionTab();
+  initViralTab();
   initChapters();
   initVoiceEditor();
   initLinkModal();
@@ -16,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initShortsTab();
   initPlanTab();
   initCommentTab();
+  initResearchTab();
+  initPWA();
 });
 
 // ==========================================================================
@@ -113,12 +119,16 @@ const tabMeta = {
   "tab-channel": { title: "Channel Hub", desc: "Overview and content library for Fear Studio" },
   "tab-studio": { title: "Studio Analytics", desc: "Official YouTube Analytics API & private performance metrics" },
   "tab-audit": { title: "Channel Audit (yt-audit)", desc: "Packaging health, mobile cutoff & the ONE biggest fix this week" },
+  "tab-retention": { title: "Audience Retention (yt-retention)", desc: "Audience drop diagnostic, hook leak, and mid-story cliffs" },
+  "tab-skill-lab": { title: "AI Skills Lab (11 Skills)", desc: "Universal AI Agent runner for all 11 skills powered by Gemini" },
   "tab-hook": { title: "Hook Scorer (yt-script)", desc: "5-Property diagnostic & formula detection" },
   "tab-title": { title: "Title & Thumbnail (yt-package)", desc: "Dual desktop & mobile packaging inspector" },
   "tab-script": { title: "AI Script Studio (yt-script)", desc: "Spoken horror scripts with retention beats" },
   "tab-seo": { title: "SEO & Tags Studio (yt-seo)", desc: "Search snippet above the fold, query targets & focused tags" },
   "tab-shorts": { title: "Shorts Extractor (yt-shorts)", desc: "Repurpose premises into 3 viral vertical shorts" },
-  "tab-chapters": { title: "Chapters & EDL (yt-chapters / yt-edit)", desc: "YouTube validated timestamps and cut lists" },
+  "tab-viral": { title: "Viral Outliers & Swipe File (yt-viral)", desc: "Rank videos by channel median multiple and classify winning formulas" },
+  "tab-research": { title: "Live Competitor Spy & Reddit Radar", desc: "Live Reddit viral trends & competitor channel intelligence" },
+  "tab-chapters": { title: "Chapters & Dead-Air (yt-chapters / yt-edit)", desc: "YouTube validated timestamps and cut lists" },
   "tab-plan": { title: "Content Calendar (yt-plan)", desc: "4-Week upload schedule sized to creator production hours" },
   "tab-comment": { title: "Comment Responder (yt-comment)", desc: "4-Pile comment triage and authentic voice replies" },
   "tab-voice": { title: "Voice Profile", desc: "Channel identity and tone guidelines (config/voice.md)" }
@@ -220,20 +230,45 @@ function initMobileNavigation() {
   });
 }
 
-// 2. Channel Data Loading
+// 2. Channel Data Loading & Real-time Live Sync
 let allChannelVideos = [];
+let channelLiveSyncInterval = null;
 
-async function loadChannelData() {
+async function loadChannelData(forceRefresh = false) {
+  const syncBtn = document.getElementById("btn-refresh-channel-live");
+  const syncIcon = document.getElementById("refresh-icon");
+  const syncLabel = document.getElementById("refresh-btn-label");
+  const syncStatusText = document.getElementById("hub-sync-status-text");
+
+  if (forceRefresh && syncBtn) {
+    syncBtn.disabled = true;
+    if (syncIcon) syncIcon.classList.add("fa-spin");
+    if (syncLabel) syncLabel.textContent = "Syncing...";
+  }
+
   try {
-    const res = await fetch("/api/channel");
+    const url = forceRefresh ? "/api/channel/refresh" : "/api/channel";
+    const method = forceRefresh ? "POST" : "GET";
+    const res = await fetch(url, { method });
     if (!res.ok) return;
     const data = await res.json();
 
-    document.getElementById("ch-name").textContent = data.name || "Channel";
-    document.getElementById("ch-handle").textContent = data.handle || "";
-    document.getElementById("hub-channel-name").textContent = data.name || "Channel";
-    document.getElementById("hub-channel-desc").textContent = data.description || "No description set.";
+    const chName = data.name || "Fear Studio";
+    const rawHandle = data.handle || "@FearStudio96";
+    const chHandle = rawHandle.includes("@") ? "@" + rawHandle.split("@")[1].split("/")[0] : rawHandle;
     
+    const nameEl = document.getElementById("ch-name");
+    if (nameEl) nameEl.textContent = chName;
+    const handleEl = document.getElementById("ch-handle");
+    if (handleEl) handleEl.textContent = chHandle;
+    const hubNameEl = document.getElementById("hub-channel-name");
+    if (hubNameEl) hubNameEl.textContent = chName;
+    const descEl = document.getElementById("hub-channel-desc");
+    if (descEl) descEl.textContent = data.description || "Welcome to Fear Studio — dark, atmospheric horror and true scary storytelling.";
+    
+    const handleTag = document.getElementById("hub-handle-tag");
+    if (handleTag) handleTag.textContent = chHandle;
+
     // Subscriber count & public video count
     const rawSubs = data.subscriber_count || "120 subscribers";
     const cleanSubs = rawSubs.replace(/subscribers?/i, "").trim();
@@ -245,33 +280,65 @@ async function loadChannelData() {
     const vCountEl = document.getElementById("hub-video-count");
     if (vCountEl) vCountEl.textContent = cleanVideos || "39";
 
-    if (data.url) {
-      document.getElementById("hub-yt-link").href = data.url;
+    const ytLink = document.getElementById("hub-yt-link");
+    if (ytLink && data.url) {
+      ytLink.href = data.url;
     }
 
-    // Set official Avatar / PFP
+    // Set official Avatar / PFP across all locations dynamically from API
     if (data.avatar) {
       const chAv = document.getElementById("ch-avatar");
       if (chAv) chAv.innerHTML = `<img src="${data.avatar}" alt="PFP" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-      const heroAv = document.querySelector(".hero-avatar");
-      if (heroAv) heroAv.innerHTML = `<img src="${data.avatar}" alt="PFP" style="width:100%;height:100%;border-radius:14px;object-fit:cover;">`;
+      
+      const hubAvImg = document.getElementById("hub-avatar-img");
+      if (hubAvImg) hubAvImg.src = data.avatar;
+
       const studioAv = document.getElementById("studio-ch-avatar");
-      if (studioAv) studioAv.innerHTML = `<img src="${data.avatar}" alt="PFP" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      if (studioAv) studioAv.innerHTML = `<img src="${data.avatar}" alt="PFP" class="studio-avatar-img" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     }
 
-    // Set official Banner
+    // Set official Cover Banner dynamically from API
     if (data.banner) {
-      const hero = document.querySelector(".channel-hero");
-      if (hero) {
-        hero.style.background = `linear-gradient(rgba(10, 12, 16, 0.78), rgba(18, 21, 28, 0.95)), url('${data.banner}') center/cover no-repeat`;
+      const coverBanner = document.getElementById("hub-cover-banner");
+      if (coverBanner) {
+        coverBanner.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(15, 15, 15, 0.88) 100%), url('${data.banner}')`;
       }
+    }
+
+    // Update Last Refreshed label
+    if (data.last_refreshed && syncStatusText) {
+      syncStatusText.textContent = `Live Synced (${data.last_refreshed.split(' ')[1] || 'Just now'})`;
     }
 
     allChannelVideos = data.recent_videos || [];
     renderVideos(allChannelVideos);
     initVideoFilters();
+
+    if (forceRefresh) {
+      showToast(`Channel live data refreshed directly from YouTube! (${cleanSubs} Subs, ${cleanVideos} Videos)`, "success");
+    }
   } catch (err) {
     console.error("Failed to load channel:", err);
+    if (forceRefresh) showToast("Live refresh failed: " + err, "error");
+  } finally {
+    if (forceRefresh && syncBtn) {
+      syncBtn.disabled = false;
+      if (syncIcon) syncIcon.classList.remove("fa-spin");
+      if (syncLabel) syncLabel.textContent = "Sync Live Data";
+    }
+  }
+}
+
+// Bind live sync button and polling
+function initChannelLiveSync() {
+  document.getElementById("btn-refresh-channel-live")?.addEventListener("click", () => {
+    loadChannelData(true);
+  });
+
+  if (!channelLiveSyncInterval) {
+    channelLiveSyncInterval = setInterval(() => {
+      loadChannelData(false);
+    }, 60000);
   }
 }
 
@@ -538,18 +605,58 @@ function initScriptWriter() {
   });
 }
 
-// 6. Chapters Generator
+// 6. Chapters & Dead-Air Generator (yt-chapters & yt-edit)
 function initChapters() {
   const input = document.getElementById("transcript-input");
-  const btn = document.getElementById("btn-gen-chapters");
-  const box = document.getElementById("chapters-output-box");
-  const text = document.getElementById("chapters-result-text");
+  const btnChapters = document.getElementById("btn-gen-chapters");
+  const btnDeadair = document.getElementById("btn-gen-deadair");
+  const btnSample = document.getElementById("btn-load-sample-srt");
+  const floorSelect = document.getElementById("deadair-floor-select");
 
-  btn.addEventListener("click", async () => {
+  const boxChapters = document.getElementById("chapters-output-box");
+  const textChapters = document.getElementById("chapters-result-text");
+  const boxDeadair = document.getElementById("deadair-output-box");
+  const textDeadair = document.getElementById("deadair-result-text");
+
+  // Load sample horror SRT
+  btnSample?.addEventListener("click", () => {
+    input.value = `1
+00:00:00,000 --> 00:00:03,800
+The silence in the emergency room was not ordinary silence.
+
+2
+00:00:04,500 --> 00:00:08,200
+It felt thick, heavy, like the air right before a thunderstorm.
+
+3
+00:00:09,000 --> 00:00:13,400
+I was sitting in Room 14 when the heart monitor began to beep.
+
+4
+00:00:15,000 --> 00:00:19,200
+The room had been empty for sixteen years. Nobody was supposed to be there.
+
+5
+00:00:20,500 --> 00:00:25,800
+I turned my flashlight toward the bed. The bedsheets were depressed, as if someone sat down.
+
+6
+00:00:28,000 --> 00:00:33,000
+Then came the whisper. It was right behind my ear. It said: don't move.`;
+    showToast("Loaded sample horror .SRT transcript", "info");
+  });
+
+  // Validated Chapters
+  btnChapters?.addEventListener("click", async () => {
     const transcript = input.value.trim();
-    if (!transcript) return;
+    if (!transcript) {
+      showToast("Please enter or load a transcript first!", "warning");
+      return;
+    }
 
-    btn.disabled = true;
+    btnChapters.disabled = true;
+    btnChapters.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating Shifts...`;
+
     try {
       const res = await fetch("/api/chapters", {
         method: "POST",
@@ -557,19 +664,57 @@ function initChapters() {
         body: jsonBody({ transcript, target: 7 })
       });
       const data = await res.json();
-      box.classList.remove("hidden");
-      text.textContent = data.chapters || "Could not generate chapters from input.";
-      showToast("Validated chapters generated!", "success");
+      boxChapters.classList.remove("hidden");
+      textChapters.textContent = data.chapters || "Could not generate chapters from input.";
+      showToast("Validated chapters generated successfully!", "success");
+      boxChapters.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
       showToast("Chapters Error: " + err, "error");
     } finally {
-      btn.disabled = false;
+      btnChapters.disabled = false;
+      btnChapters.innerHTML = `<i class="fa-solid fa-list-ol"></i> Generate Validated Chapters (yt-chapters)`;
     }
   });
 
-  document.getElementById("btn-copy-chapters").addEventListener("click", () => {
-    navigator.clipboard.writeText(text.textContent);
+  // Dead-Air EDL
+  btnDeadair?.addEventListener("click", async () => {
+    const transcript = input.value.trim();
+    if (!transcript) {
+      showToast("Please enter or load a transcript first!", "warning");
+      return;
+    }
+
+    const floor = floorSelect ? parseFloat(floorSelect.value) : 0.45;
+    btnDeadair.disabled = true;
+    btnDeadair.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Analyzing Silence...`;
+
+    try {
+      const res = await fetch("/api/deadair", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ transcript, floor })
+      });
+      const data = await res.json();
+      boxDeadair.classList.remove("hidden");
+      textDeadair.textContent = data.deadair || "No silence gaps found above threshold.";
+      showToast("Edit Decision List & cuts generated!", "success");
+      boxDeadair.scrollIntoView({ behavior: "smooth" });
+    } catch (err) {
+      showToast("Dead-Air Error: " + err, "error");
+    } finally {
+      btnDeadair.disabled = false;
+      btnDeadair.innerHTML = `<i class="fa-solid fa-scissors"></i> Find Dead-Air Cuts & EDL (yt-edit)`;
+    }
+  });
+
+  document.getElementById("btn-copy-chapters")?.addEventListener("click", () => {
+    navigator.clipboard.writeText(textChapters.textContent);
     showToast("Chapters copied to clipboard!", "success");
+  });
+
+  document.getElementById("btn-copy-deadair")?.addEventListener("click", () => {
+    navigator.clipboard.writeText(textDeadair.textContent);
+    showToast("EDL report copied to clipboard!", "success");
   });
 }
 
@@ -1466,6 +1611,643 @@ function initCommentTab() {
       btn.disabled = false;
       btn.innerHTML = `<i class="fa-solid fa-comments"></i> Triage & Draft Replies`;
     }
+  });
+}
+
+// 15. Universal AI Skills Lab (All 11 Skills - Exact Terminal Execution)
+function initSkillsLab() {
+  const pillGrid = document.getElementById("skills-pill-grid");
+  const badgeEl = document.getElementById("lab-active-skill-badge");
+  const descEl = document.getElementById("lab-active-skill-desc");
+  const inputEl = document.getElementById("lab-skill-input");
+  const chipsWrap = document.getElementById("lab-preset-chips");
+  const btnRun = document.getElementById("btn-run-lab-skill");
+  const resultBox = document.getElementById("lab-result-box");
+  const resultTitle = document.getElementById("lab-result-title");
+  const resultText = document.getElementById("lab-result-text");
+  const copyBtn = document.getElementById("btn-copy-lab-result");
+
+  if (!pillGrid || !btnRun) return;
+
+  let currentSkill = "yt-script";
+
+  const skillPresets = {
+    "yt-script": {
+      placeholder: "e.g. A true horror story about an abandoned midnight hospital where the emergency room monitor still beeps...",
+      presets: [
+        { label: "Abandoned Hospital Monitor", text: "A true horror story about an abandoned midnight hospital where the emergency room monitor still beeps for Room 14." },
+        { label: "Haunted Antique Mirror", text: "I bought a silver-backed Victorian mirror at an estate sale. The reflection doesn't blink when I do." },
+        { label: "Night Shift Gas Station", text: "3 Creepy true stories from solitary late-night gas station attendants along desolate highways." }
+      ]
+    },
+    "yt-package": {
+      placeholder: "e.g. Title: I Spent 24 Hours in an Abandoned Bunker | Thumb: DON'T GO DOWN",
+      presets: [
+        { label: "Title + Thumb Pairing Test", text: "Title: I Found a Secret Door Hidden Inside My Basement [True Story] --thumb: 'NEVER OPEN IT'" },
+        { label: "Check Clickbait Truncation", text: "Title: What Really Happened to the Hikers on Blackwood Mountain Will Haunt You Forever" }
+      ]
+    },
+    "yt-seo": {
+      placeholder: "e.g. Skinwalker sightings in the Appalachian mountains true encounters",
+      presets: [
+        { label: "Appalachian Skinwalker", text: "Skinwalker sightings in the Appalachian mountains true terrifying encounters to sleep to" },
+        { label: "Abandoned Radio Signal", text: "The midnight radio frequency that broadcast emergency warnings 30 years after the town was abandoned" }
+      ]
+    },
+    "yt-shorts": {
+      placeholder: "e.g. Paste a long-form story outline or transcript to extract 3 self-contained vertical Shorts...",
+      presets: [
+        { label: "Lighthouse Mystery", text: "I spent 3 nights alone guarding the Point Dread lighthouse. On the second night, heavy wet footsteps climbed the spiral stairs, but the front door was still chained from the inside." }
+      ]
+    },
+    "yt-plan": {
+      placeholder: "e.g. I have 10 hours per week. Theme: Atmospheric horror folklore and creepypasta narration",
+      presets: [
+        { label: "8 hrs/week - Horror Catalog", text: "8 hours available per week. Channel Theme: Late-Night Atmospheric Horror Narration & Urban Legends." },
+        { label: "14 hrs/week - Fast Growth", text: "14 hours available per week. Channel Theme: True Crime & Paranormal Investigations." }
+      ]
+    },
+    "yt-comment": {
+      placeholder: "e.g. Paste real viewer comments (one per line) to triage into 4 piles and generate replies...",
+      presets: [
+        { label: "Triage 4 Sample Comments", text: "Is this real or fiction?\nThe sound design at 3:12 made my heart stop!\nFake garbage unsubbed.\nCan you make a part 2 about the lighthouse keeper's journal?" }
+      ]
+    },
+    "yt-viral": {
+      placeholder: "e.g. Find viral outlier videos in horror niche and detect which hook formula beat the channel median...",
+      presets: [
+        { label: "Horror Outlier Formula Analysis", text: "Analyze what viral patterns and hook formulas are consistently beating channel median view counts across dark storytelling channels." }
+      ]
+    },
+    "yt-retention": {
+      placeholder: "e.g. Paste retention percentages or drop coordinates to analyze Hook Leak and sudden Cliffs...",
+      presets: [
+        { label: "Analyze Hook Leak & 30s Cliff", text: "Audience Retention Drop Data: 0:00 (100%), 0:15 (71%), 0:30 (61%), 1:00 (58%), 2:00 (54%), 3:00 (49%), 5:00 (43%), 8:00 (35%). Duration: 600s." }
+      ]
+    },
+    "yt-audit": {
+      placeholder: "e.g. Channel @FearStudio96. Review recent title truncation, 0:15 cold opens, and single biggest fix.",
+      presets: [
+        { label: "Fear Studio Catalog Audit", text: "Run full YouTube agent audit for channel @FearStudio96. Analyze catalog consistency, packaging mobile cutoffs, and produce the ONE decisive fix for this week." }
+      ]
+    },
+    "yt-chapters": {
+      placeholder: "e.g. Paste transcript or video timestamps to generate YouTube chapters starting at 00:00...",
+      presets: [
+        { label: "Horror Video Timestamps", text: "Generate validated YouTube chapter markers from transcript: 0:00 Introduction, 1:15 Finding the house, 4:20 The cellar discovery, 7:50 The creature reveals itself, 11:30 The escape." }
+      ]
+    },
+    "yt-edit": {
+      placeholder: "e.g. Paste transcript to generate Edit Decision List: cuts, pauses > 0.45s, and filler cues...",
+      presets: [
+        { label: "Cut Dead Air from Raw Audio", text: "Review raw recording transcript: find dead air pauses > 0.45s, filler words ('um', 'uh', 'like'), and mark retake cues with timecodes." }
+      ]
+    }
+  };
+
+  function updateActiveSkillUI(skillName) {
+    currentSkill = skillName;
+    const cards = pillGrid.querySelectorAll(".skill-pill-card");
+    cards.forEach(c => {
+      if (c.getAttribute("data-skill") === skillName) {
+        c.classList.add("active");
+        badgeEl.textContent = skillName;
+        descEl.textContent = c.getAttribute("data-desc") || "";
+      } else {
+        c.classList.remove("active");
+      }
+    });
+
+    const conf = skillPresets[skillName] || { placeholder: "Enter your prompt or input...", presets: [] };
+    inputEl.placeholder = conf.placeholder;
+
+    // Render preset chips
+    chipsWrap.innerHTML = "";
+    (conf.presets || []).forEach(p => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "preset-chip";
+      chip.textContent = p.label;
+      chip.addEventListener("click", () => {
+        inputEl.value = p.text;
+        showToast(`Loaded preset for ${skillName}`, "info");
+      });
+      chipsWrap.appendChild(chip);
+    });
+  }
+
+  // Handle skill card selection
+  pillGrid.addEventListener("click", (e) => {
+    const card = e.target.closest(".skill-pill-card");
+    if (card) {
+      const skillName = card.getAttribute("data-skill");
+      updateActiveSkillUI(skillName);
+    }
+  });
+
+  // Initialize with yt-script
+  updateActiveSkillUI("yt-script");
+
+  // Run Skill
+  btnRun.addEventListener("click", async () => {
+    const inputVal = inputEl.value.trim();
+    if (!inputVal) {
+      showToast(`Please enter input for ${currentSkill}!`, "warning");
+      return;
+    }
+
+    btnRun.disabled = true;
+    btnRun.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Executing ${currentSkill}...`;
+
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ skill: currentSkill, input: inputVal })
+      });
+      const data = await res.json();
+      resultBox.classList.remove("hidden");
+      resultTitle.textContent = `${currentSkill} AI Result`;
+
+      if (data.mode === "ai" && data.result) {
+        resultText.textContent = data.result;
+      } else {
+        resultText.textContent = data.result || data.prompt || "No output returned.";
+      }
+
+      showToast(`${currentSkill} executed successfully with Gemini!`, "success");
+      resultBox.scrollIntoView({ behavior: "smooth" });
+    } catch (err) {
+      showToast(`Execution failed: ${err}`, "error");
+    } finally {
+      btnRun.disabled = false;
+      btnRun.innerHTML = `<i class="fa-solid fa-bolt"></i> Execute Skill with Gemini AI`;
+    }
+  });
+
+  copyBtn?.addEventListener("click", () => {
+    navigator.clipboard.writeText(resultText.textContent);
+    showToast("Skill output copied to clipboard!", "success");
+  });
+}
+
+// 16. Audience Retention Curve Analyzer (yt-retention)
+function initRetentionTab() {
+  const input = document.getElementById("retention-csv-input");
+  const btnSample = document.getElementById("btn-load-sample-retention");
+  const btnRun = document.getElementById("btn-run-retention");
+  const resultBox = document.getElementById("retention-result-box");
+  const resultText = document.getElementById("retention-result-text");
+  const copyBtn = document.getElementById("btn-copy-retention");
+
+  if (!btnRun) return;
+
+  btnSample?.addEventListener("click", () => {
+    input.value = `Video Time,Audience Retention %
+0:00,100%
+0:15,74%
+0:30,64%
+0:45,52%
+1:00,50%
+1:30,48%
+2:00,46%
+2:45,39%
+3:00,38%
+4:00,36%
+5:00,34%
+6:00,32%
+7:00,30%
+8:00,28%
+10:00,25%`;
+    showToast("Loaded 10-Minute Horror Retention Sample CSV", "info");
+  });
+
+  btnRun.addEventListener("click", async () => {
+    const csv = input.value.trim();
+    if (!csv) {
+      showToast("Please enter or load retention CSV data first!", "warning");
+      return;
+    }
+
+    btnRun.disabled = true;
+    btnRun.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating Leaks & Cliffs...`;
+
+    try {
+      const res = await fetch("/api/retention", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ csv })
+      });
+      const data = await res.json();
+      resultBox.classList.remove("hidden");
+      resultText.textContent = data.retention || "No retention data calculated.";
+      showToast("Audience Retention Diagnostic complete!", "success");
+      resultBox.scrollIntoView({ behavior: "smooth" });
+    } catch (e) {
+      showToast("Retention calculation failed: " + e, "error");
+    } finally {
+      btnRun.disabled = false;
+      btnRun.innerHTML = `<i class="fa-solid fa-bolt"></i> Diagnose Retention Leaks`;
+    }
+  });
+
+  copyBtn?.addEventListener("click", () => {
+    navigator.clipboard.writeText(resultText.textContent);
+    showToast("Retention report copied to clipboard!", "success");
+  });
+}
+
+// 17. Viral Outliers & Swipe File (yt-viral)
+function initViralTab() {
+  const input = document.getElementById("viral-json-input");
+  const multSelect = document.getElementById("viral-multiplier-select");
+  const btnSample = document.getElementById("btn-load-sample-swipe");
+  const btnRun = document.getElementById("btn-run-swipe");
+  const resultBox = document.getElementById("viral-result-box");
+  const resultText = document.getElementById("viral-result-text");
+  const copyBtn = document.getElementById("btn-copy-swipe");
+
+  if (!btnRun) return;
+
+  btnSample?.addEventListener("click", () => {
+    input.value = JSON.stringify([
+      { "channel": "CreepCast", "title": "I Investigated a Radio Station That Does Not Exist", "views": 920000, "url": "https://youtube.com/watch?v=demo1" },
+      { "channel": "CreepCast", "title": "The Left Right Game Explained", "views": 410000, "url": "https://youtube.com/watch?v=demo2" },
+      { "channel": "CreepCast", "title": "Borrasca Deep Dive Discussion", "views": 380000, "url": "https://youtube.com/watch?v=demo3" },
+      { "channel": "CreepCast", "title": "Penpal Story Reaction", "views": 340000, "url": "https://youtube.com/watch?v=demo4" },
+      { "channel": "Fear Studio", "title": "The Mirror in the Guest Room Doesn't Reflect Me", "views": 84000, "url": "https://youtube.com/watch?v=demo5" },
+      { "channel": "Fear Studio", "title": "Late Night Driving Stories", "views": 18000, "url": "https://youtube.com/watch?v=demo6" },
+      { "channel": "Fear Studio", "title": "3 Creepy Encounters Alone", "views": 15000, "url": "https://youtube.com/watch?v=demo7" },
+      { "channel": "Fear Studio", "title": "Hospital Emergency Room Monitor", "views": 14000, "url": "https://youtube.com/watch?v=demo8" }
+    ], null, 2);
+    showToast("Loaded sample competitor swipe video dataset", "info");
+  });
+
+  btnRun.addEventListener("click", async () => {
+    const jsonStr = input.value.trim();
+    const minMult = multSelect ? parseFloat(multSelect.value) : 1.8;
+
+    btnRun.disabled = true;
+    btnRun.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating Channel Medians...`;
+
+    try {
+      const res = await fetch("/api/swipe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ json: jsonStr, min: minMult })
+      });
+      const data = await res.json();
+      resultBox.classList.remove("hidden");
+      resultText.textContent = data.swipe || "No outliers matched the selected multiple.";
+      showToast("Outlier swipe file computed!", "success");
+      resultBox.scrollIntoView({ behavior: "smooth" });
+    } catch (e) {
+      showToast("Swipe calculation failed: " + e, "error");
+    } finally {
+      btnRun.disabled = false;
+      btnRun.innerHTML = `<i class="fa-solid fa-bolt"></i> Rank Outliers & Classify Formulas`;
+    }
+  });
+
+  copyBtn?.addEventListener("click", () => {
+    navigator.clipboard.writeText(resultText.textContent);
+    showToast("Swipe report copied to clipboard!", "success");
+  });
+}
+
+// 18. Live Competitor Spy & Reddit Radar
+function initResearchTab() {
+  const redditSubSelect = document.getElementById("research-reddit-sub");
+  const redditTimeSelect = document.getElementById("research-reddit-time");
+  const btnFetchReddit = document.getElementById("btn-fetch-reddit");
+  const compInput = document.getElementById("research-competitor-input");
+  const btnSpyComp = document.getElementById("btn-spy-competitor");
+  const btnSynthesize = document.getElementById("btn-synthesize-ideas");
+  const feedContainer = document.getElementById("research-feed-container");
+  const ideasBox = document.getElementById("research-ideas-box");
+  const ideasGrid = document.getElementById("research-ideas-grid");
+  const countSpan = document.getElementById("trend-items-count");
+  const redditBadge = document.getElementById("reddit-count-badge");
+  const compBadge = document.getElementById("competitor-status-badge");
+  const compPresetBtns = document.querySelectorAll(".comp-preset-btn");
+
+  if (!btnFetchReddit || !btnSynthesize) return;
+
+  let loadedResearchItems = [];
+
+  // Competitor quick preset clicks
+  compPresetBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const handle = btn.getAttribute("data-handle");
+      if (compInput && handle) {
+        compInput.value = handle;
+        btnSpyComp.click();
+      }
+    });
+  });
+
+  // 1. Pull Reddit stories
+  btnFetchReddit.addEventListener("click", async () => {
+    const sub = redditSubSelect ? redditSubSelect.value : "nosleep";
+    const timeframe = redditTimeSelect ? redditTimeSelect.value : "week";
+
+    btnFetchReddit.disabled = true;
+    btnFetchReddit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Pulling r/${sub}...`;
+
+    try {
+      const res = await fetch("/api/research/reddit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ subreddit: sub, timeframe, limit: 12 })
+      });
+      const data = await res.json();
+      const posts = data.posts || [];
+
+      if (!posts.length) {
+        showToast("No posts retrieved. Try a different timeframe.", "warning");
+        return;
+      }
+
+      // Prepend to research items
+      posts.forEach(p => {
+        if (!loadedResearchItems.some(item => item.id === p.id)) {
+          loadedResearchItems.unshift({
+            type: "reddit",
+            id: p.id,
+            title: p.title,
+            subreddit: p.subreddit,
+            ups: p.score_badge,
+            preview: p.preview,
+            full_text: p.full_text,
+            url: p.url,
+            author: p.author
+          });
+        }
+      });
+
+      renderFeedCards();
+      if (redditBadge) redditBadge.textContent = `${posts.length} Stories Loaded`;
+      showToast(`Pulled ${posts.length} trending stories from r/${sub}!`, "success");
+    } catch (e) {
+      showToast("Reddit fetch failed: " + e, "error");
+    } finally {
+      btnFetchReddit.disabled = false;
+      btnFetchReddit.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Pull Trending Reddit Stories`;
+    }
+  });
+
+  // 2. Spy on Competitor
+  btnSpyComp?.addEventListener("click", async () => {
+    const handle = compInput ? compInput.value.trim() : "@MrNightmare";
+    if (!handle) return;
+
+    btnSpyComp.disabled = true;
+    btnSpyComp.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+    try {
+      const res = await fetch("/api/research/competitor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({ handle })
+      });
+      const data = await res.json();
+      if (data.error) {
+        showToast("Competitor Error: " + data.error, "error");
+        return;
+      }
+
+      const videos = data.videos || [];
+      videos.forEach(v => {
+        if (!loadedResearchItems.some(item => item.id === v.videoId)) {
+          loadedResearchItems.unshift({
+            type: "youtube",
+            id: v.videoId,
+            title: v.title,
+            source: data.channel_name || handle,
+            thumbnail: v.thumbnail,
+            url: v.url,
+            label: v.label || "Recent Video",
+            preview: `Top upload from ${data.channel_name} (${data.subscribers || "Public Channel"}).`
+          });
+        }
+      });
+
+      renderFeedCards();
+      if (compBadge) compBadge.textContent = `${videos.length} Videos Spied`;
+      showToast(`Spied on ${data.channel_name}: ${videos.length} recent videos analyzed!`, "success");
+    } catch (e) {
+      showToast("Competitor spy failed: " + e, "error");
+    } finally {
+      btnSpyComp.disabled = false;
+      btnSpyComp.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Spy`;
+    }
+  });
+
+  // 3. Render Trend Stream Cards
+  function renderFeedCards() {
+    if (countSpan) countSpan.textContent = loadedResearchItems.length;
+    if (!loadedResearchItems.length || !feedContainer) return;
+
+    feedContainer.innerHTML = loadedResearchItems.slice(0, 15).map(item => {
+      if (item.type === "reddit") {
+        return `
+          <div class="trend-feed-card reddit-trend-card">
+            <div class="trend-card-top">
+              <span class="trend-badge-sub"><i class="fa-brands fa-reddit"></i> ${escapeHtml(item.subreddit)}</span>
+              <span class="trend-badge-ups">${escapeHtml(item.ups)}</span>
+            </div>
+            <h5 class="trend-card-title"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></h5>
+            <p class="trend-card-preview">${escapeHtml(item.preview)}</p>
+            <div class="trend-card-footer">
+              <span class="trend-author"><i class="fa-regular fa-user"></i> u/${escapeHtml(item.author)}</span>
+              <button class="btn btn-sm btn-secondary btn-quick-use-idea" data-title="${escapeHtml(item.title)}">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Use as Prompt
+              </button>
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="trend-feed-card yt-trend-card">
+            <div class="trend-card-top">
+              <span class="trend-badge-yt"><i class="fa-brands fa-youtube"></i> ${escapeHtml(item.source)}</span>
+              <span class="trend-badge-meta">Competitor</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              ${item.thumbnail ? `<img src="${escapeHtml(item.thumbnail)}" alt="Thumb" class="trend-yt-thumb">` : ''}
+              <div>
+                <h5 class="trend-card-title"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a></h5>
+                <p class="trend-card-preview" style="margin:4px 0 0 0;">${escapeHtml(item.preview)}</p>
+              </div>
+            </div>
+            <div class="trend-card-footer" style="margin-top:8px;">
+              <span style="font-size:11px; color:var(--text-muted);">${escapeHtml(item.label)}</span>
+              <button class="btn btn-sm btn-secondary btn-quick-use-idea" data-title="${escapeHtml(item.title)}">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Use as Prompt
+              </button>
+            </div>
+          </div>
+        `;
+      }
+    }).join("");
+
+    // Hook up quick prompt buttons
+    feedContainer.querySelectorAll(".btn-quick-use-idea").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const title = btn.getAttribute("data-title");
+        sendToScriptStudio(title);
+      });
+    });
+  }
+
+  // 4. Synthesize 5 Viral Ideas with Gemini AI
+  btnSynthesize.addEventListener("click", async () => {
+    btnSynthesize.disabled = true;
+    btnSynthesize.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Gemini Synthesizing Ideas...`;
+
+    try {
+      const res = await fetch("/api/research/ideas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: jsonBody({
+          items: loadedResearchItems.slice(0, 10),
+          niche: "Late-Night Atmospheric Horror Narration & Urban Legends"
+        })
+      });
+      const data = await res.json();
+      const ideas = data.ideas || [];
+
+      if (!ideas.length) {
+        showToast("No ideas could be generated at this time.", "warning");
+        return;
+      }
+
+      ideasBox.classList.remove("hidden");
+      ideasGrid.innerHTML = ideas.map((idea, idx) => `
+        <div class="concept-package-card">
+          <div class="concept-card-header">
+            <span class="concept-number">#${idx + 1}</span>
+            <span class="concept-formula-badge">${escapeHtml(idea.formula || "Horror Hook")}</span>
+            <span class="pill-badge badge-glow" style="background:rgba(255,69,0,0.2); color:#ff4500;">High CTR</span>
+          </div>
+
+          <h4 class="concept-title">${escapeHtml(idea.title)}</h4>
+
+          <div class="concept-hook-box">
+            <div class="concept-hook-label"><i class="fa-solid fa-microphone"></i> 0:15 Cold Open Hook:</div>
+            <div class="concept-hook-quote">"${escapeHtml(idea.hook_0_15)}"</div>
+          </div>
+
+          <div class="concept-meta-grid">
+            <div class="concept-meta-col">
+              <span class="concept-meta-label"><i class="fa-solid fa-image"></i> Thumbnail Text:</span>
+              <span class="concept-thumb-text-preview">${escapeHtml(idea.thumb_text || "DON'T LOOK")}</span>
+              <p class="concept-thumb-visual">${escapeHtml(idea.thumb_visual || "")}</p>
+            </div>
+            <div class="concept-meta-col">
+              <span class="concept-meta-label"><i class="fa-solid fa-masks-theater"></i> The Story Twist:</span>
+              <p class="concept-twist-text">${escapeHtml(idea.core_twist || "")}</p>
+            </div>
+          </div>
+
+          <div class="concept-action-footer">
+            <span class="concept-inspo"><i class="fa-solid fa-seedling"></i> ${escapeHtml(idea.source_inspo || "Curated trend")}</span>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-sm btn-secondary btn-copy-concept-btn" data-json="${escapeHtml(JSON.stringify(idea))}">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+              <button class="btn btn-sm btn-primary btn-transfer-script-btn" data-seed="${escapeHtml(idea.script_seed || idea.title)}" data-title="${escapeHtml(idea.title)}">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Send to Script Studio &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      // Bind copy and transfer buttons
+      ideasGrid.querySelectorAll(".btn-copy-concept-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const raw = btn.getAttribute("data-json");
+          try {
+            const parsed = JSON.parse(raw);
+            const textToCopy = `TITLE: ${parsed.title}\nHOOK (0:15): ${parsed.hook_0_15}\nTHUMB TEXT: ${parsed.thumb_text}\nTHUMB VISUAL: ${parsed.thumb_visual}\nSTORY TWIST: ${parsed.core_twist}\nPROMPT SEED:\n${parsed.script_seed}`;
+            navigator.clipboard.writeText(textToCopy);
+            showToast("Copied full video package to clipboard!", "success");
+          } catch(e) {
+            navigator.clipboard.writeText(raw);
+            showToast("Copied!", "success");
+          }
+        });
+      });
+
+      ideasGrid.querySelectorAll(".btn-transfer-script-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const seed = btn.getAttribute("data-seed");
+          sendToScriptStudio(seed);
+        });
+      });
+
+      showToast("5 Viral Fear Studio Concepts generated with Gemini!", "success");
+      ideasBox.scrollIntoView({ behavior: "smooth" });
+    } catch (e) {
+      showToast("Idea synthesis failed: " + e, "error");
+    } finally {
+      btnSynthesize.disabled = false;
+      btnSynthesize.innerHTML = `<i class="fa-solid fa-brain"></i> Auto-Generate 5 Viral Video Concepts`;
+    }
+  });
+
+  function sendToScriptStudio(text) {
+    const scriptInput = document.getElementById("script-input-topic") || document.getElementById("script-topic-input") || document.getElementById("input-script-topic");
+    if (scriptInput) {
+      scriptInput.value = text;
+    }
+    switchTab("tab-script");
+    showToast("Concept transferred to Script Studio! Hit 'Generate Full Script' now.", "info", 4500);
+  }
+
+  // Pre-load initial Reddit stories on first visit if empty
+  btnFetchReddit.click();
+}
+
+// 19. Progressive Web App (PWA) & Mobile Install Prompt
+function initPWA() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(err => {
+        console.log("Service Worker registration failed:", err);
+      });
+    });
+  }
+
+  let deferredPrompt;
+  const installBtn = document.getElementById("btn-pwa-install");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installBtn) {
+      installBtn.classList.remove("hidden");
+    }
+  });
+
+  installBtn?.addEventListener("click", async () => {
+    if (!deferredPrompt) {
+      showToast("To install on mobile, tap browser menu (⋮) -> 'Add to Home screen' / 'Install App'.", "info", 5000);
+      return;
+    }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      showToast("Installing Fear Studio App on your device!", "success");
+      installBtn.classList.add("hidden");
+    }
+    deferredPrompt = null;
+  });
+
+  window.addEventListener("appinstalled", () => {
+    if (installBtn) installBtn.classList.add("hidden");
+    showToast("Fear Studio App installed to Home Screen!", "success");
   });
 }
 

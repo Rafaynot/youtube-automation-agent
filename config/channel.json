@@ -11,10 +11,10 @@
   "recent_videos": [
     {
       "videoId": "paaQciVXPuM",
-      "title": "3 Creepy Trick-or-Treating Stories You Shouldn’t Hear Alone",
+      "title": "3 Creepy Trick-or-Treating Stories That Should NEVER Have Happened",
       "url": "https://www.youtube.com/watch?v=paaQciVXPuM",
       "thumbnail": "https://i.ytimg.com/vi/paaQciVXPuM/hqdefault.jpg",
-      "label": "3 Creepy Trick-or-Treating Stories You Shouldn’t Hear Alone 8 minutes, 18 seconds"
+      "label": "3 Creepy Trick-or-Treating Stories That Should NEVER Have Happened 8 minutes, 18 seconds"
     },
     {
       "videoId": "xzckb7WSyBw",
@@ -72,5 +72,6 @@
       "thumbnail": "https://i.ytimg.com/vi/WEiX7OPIeQk/hqdefault.jpg",
       "label": "I Stayed in School After Midnight... I Wasn’t Alone. 4 minutes, 6 seconds"
     }
-  ]
+  ],
+  "last_refreshed": "2026-10-28 14:25:02"
 }

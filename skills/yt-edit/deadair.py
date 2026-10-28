@@ -35,6 +35,7 @@ def load(path):
             cur = [parse_ts(m.group(1)), parse_ts(m.group(2)), []]
             cues.append(cur)
         elif cur is not None and line.strip() and not line.strip().isdigit():
+            cur[2].append(line.strip())
     res = [(a, b, " ".join(t)) for a, b, t in cues if t]
     if res:
         return res

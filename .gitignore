@@ -2,6 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 output/
-.env
-config/client_secret.json
-config/studio_tokens.json
+# .env
+# config/client_secret.json
+# config/studio_tokens.json

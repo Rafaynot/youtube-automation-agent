@@ -16,9 +16,9 @@ def fetch_channel_data(channel_url_or_handle: str) -> dict:
     if not clean.startswith("http"):
         if not clean.startswith("@"):
             clean = "@" + clean
-        url = f"https://www.youtube.com/{clean}/videos"
-    elif not clean.endswith("/videos"):
-        url = f"{clean}/videos"
+        url = f"https://www.youtube.com/{clean}"
+    elif clean.endswith("/videos"):
+        url = clean[:-7]
     else:
         url = clean
 

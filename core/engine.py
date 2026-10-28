@@ -4,10 +4,15 @@ Zero external dependencies. Invokes the tools cleanly and reliably.
 """
 import os
 import sys
+import json
 import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from core import llm
+from config import resolver
 
 TOOLS = {
     "hook": ROOT / "skills" / "yt-script" / "hookscore.py",
@@ -53,7 +58,8 @@ def score_hook(hook: str, as_json: bool = False) -> str:
 
 def score_hook_file(file_path: str, as_json: bool = False) -> str:
     """Score hooks from a text file."""
-    args = [file_path]
+    abs_path = str(Path(file_path).resolve())
+    args = [abs_path]
     if as_json:
         args.append("--json")
     code, out = execute_tool("hook", args)
@@ -71,7 +77,8 @@ def lint_title(title: str, thumb: str | None = None, as_json: bool = False) -> s
 
 def run_deadair(file_path: str, floor: float = 0.45, as_json: bool = False) -> str:
     """Generate edit decision list from subtitle/transcript file."""
-    args = [file_path, "--floor", str(floor)]
+    abs_path = str(Path(file_path).resolve())
+    args = [abs_path, "--floor", str(floor)]
     if as_json:
         args.append("--json")
     code, out = execute_tool("deadair", args)
@@ -79,7 +86,8 @@ def run_deadair(file_path: str, floor: float = 0.45, as_json: bool = False) -> s
 
 def run_chapters(file_path: str, target: int = 7, as_json: bool = False) -> str:
     """Generate YouTube chapters from transcript."""
-    args = [file_path, "--target", str(target)]
+    abs_path = str(Path(file_path).resolve())
+    args = [abs_path, "--target", str(target)]
     if as_json:
         args.append("--json")
     code, out = execute_tool("chapters", args)
@@ -87,11 +95,13 @@ def run_chapters(file_path: str, target: int = 7, as_json: bool = False) -> str:
 
 def run_retention(csv_path: str, duration: int | None = None, transcript: str | None = None, as_json: bool = False) -> str:
     """Analyze YouTube audience retention CSV."""
-    args = [csv_path]
+    abs_csv = str(Path(csv_path).resolve())
+    args = [abs_csv]
     if duration:
         args.extend(["--duration", str(duration)])
     if transcript:
-        args.extend(["--transcript", transcript])
+        abs_ts = str(Path(transcript).resolve())
+        args.extend(["--transcript", abs_ts])
     if as_json:
         args.append("--json")
     code, out = execute_tool("retention", args)
@@ -99,7 +109,8 @@ def run_retention(csv_path: str, duration: int | None = None, transcript: str | 
 
 def run_swipe(json_path: str, min_multiple: float = 2.0, as_json: bool = False) -> str:
     """Calculate viral outliers from collected video data."""
-    args = [json_path, "--min", str(min_multiple)]
+    abs_path = str(Path(json_path).resolve())
+    args = [abs_path, "--min", str(min_multiple)]
     if as_json:
         args.append("--json")
     code, out = execute_tool("swipe", args)
@@ -241,34 +252,18 @@ def generate_seo_package(topic_or_title: str) -> dict:
     clean_words = [w.capitalize() for w in t.replace("—", " ").replace("-", " ").split() if len(w) > 3][:6]
     main_topic = " ".join(clean_words) or t
 
-    # 1. 2-line search snippet above the fold
+    # Fallback template
     snippet = f"A true horror encounter exploring {t.lower()}. What really happened when the silence was broken, and why you should never look back."
-
-    # 2. 3 Search queries this video should win
     queries = [
         f"{t.lower()}",
         f"{' '.join(clean_words[:3]).lower()} true horror stories",
         f"creepy scary stories to listen to alone"
     ]
-
-    # 3. 12-15 Focused Disambiguation Tags
     tags = [
-        t.lower(),
-        f"{t.lower()} story",
-        "fear studio",
-        "true horror stories",
-        "creepy stories",
-        "scary stories",
-        "paranormal encounter",
-        "horror narration",
-        "stories to sleep to",
-        "urban legend",
-        "terrifying encounter",
-        "dark stories",
-        "nightmare fuel"
+        t.lower(), f"{t.lower()} story", "fear studio", "true horror stories",
+        "creepy stories", "scary stories", "paranormal encounter", "horror narration",
+        "stories to sleep to", "urban legend", "terrifying encounter", "dark stories", "nightmare fuel"
     ]
-
-    # 4. Description body with chapters & voice notes
     desc_body = f"""{snippet}
 
 🔔 Subscribe to Fear Studio for immersive horror storytelling:
@@ -284,6 +279,43 @@ TIMESTAMPS:
 
 #HorrorStories #ScaryStories #FearStudio #CreepyTale
 """
+
+    # AI Enhancement if Gemini or other provider available
+    provider, _ = llm.detect_provider()
+    if provider:
+        voice = resolver.load_voice_content()
+        seo_prompt = f"""You are an elite YouTube SEO strategist following skills/yt-seo/SKILL.md.
+Video Topic / Title: {t}
+Creator Voice Profile:
+{voice if voice else "Dark, atmospheric storytelling"}
+
+Generate a high-ranking YouTube SEO package strictly as a JSON object with:
+- "snippet_above_fold": exactly 2 sentences confirming the click without giving away the ending.
+- "target_queries": array of 3 specific search queries a real person types that this video should win.
+- "tags": array of 12-15 focused tags.
+- "description_body": formatted complete YouTube description including timestamps, call to action, and hashtags.
+
+Output ONLY valid raw JSON with keys: snippet_above_fold, target_queries, tags, description_body. No code fences."""
+        success, resp = llm.generate_ai_response("You are an expert YouTube SEO assistant. Output only JSON.", seo_prompt)
+        if success:
+            try:
+                txt = resp.strip()
+                if txt.startswith("```"):
+                    txt = txt.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+                parsed = json.loads(txt)
+                if "tags" in parsed and "description_body" in parsed:
+                    return {
+                        "title": t,
+                        "snippet_above_fold": parsed.get("snippet_above_fold", snippet),
+                        "target_queries": parsed.get("target_queries", queries),
+                        "tags": parsed.get("tags", tags),
+                        "tag_count": len(parsed.get("tags", tags)),
+                        "description_body": parsed.get("description_body", desc_body),
+                        "gate_question": "ship it, or change it?"
+                    }
+            except Exception:
+                pass
+
     return {
         "title": t,
         "snippet_above_fold": snippet,
@@ -297,7 +329,54 @@ TIMESTAMPS:
 def triage_comments_text(comments_text: str) -> dict:
     """Triage YouTube comments into 4 piles and draft replies in channel voice (yt-comment)."""
     lines = [l.strip() for l in comments_text.splitlines() if l.strip()]
+
+    # AI Enhancement if Gemini available
+    provider, _ = llm.detect_provider()
+    if provider and lines:
+        voice = resolver.load_voice_content()
+        comment_prompt = f"""You are a YouTube comment strategist following skills/yt-comment/SKILL.md.
+Creator Voice Profile:
+{voice if voice else "Dark, atmospheric storytelling"}
+
+Triage these viewer comments into 4 piles and draft in-character replies:
+COMMENTS:
+{comments_text}
+
+Output ONLY valid raw JSON with this structure:
+{{
+  "piles": {{
+    "worth_answering": [
+      {{"comment": "...", "reply": "...", "action": "..."}}
+    ],
+    "pin_candidate": [
+      {{"comment": "...", "reply": "...", "action": "..."}}
+    ],
+    "praise": [
+      {{"comment": "...", "reply": "...", "action": "..."}}
+    ],
+    "trash": [
+      {{"comment": "...", "action": "Ignore / Hide silently"}}
+    ]
+  }}
+}}
+No markdown fences."""
+        success, resp = llm.generate_ai_response("You are an expert YouTube community manager. Output only JSON.", comment_prompt)
+        if success:
+            try:
+                txt = resp.strip()
+                if txt.startswith("```"):
+                    txt = txt.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+                parsed = json.loads(txt)
+                if "piles" in parsed:
+                    return {
+                        "total_analyzed": len(lines),
+                        "piles": parsed["piles"],
+                        "gate_question": "ship it, or change it?"
+                    }
+            except Exception:
+                pass
     
+    # Fallback rule-based triage
     piles = {
         "worth_answering": [],
         "pin_candidate": [],
@@ -344,8 +423,86 @@ def triage_comments_text(comments_text: str) -> dict:
 def plan_content_calendar(hours_per_week: int = 8, theme: str = "Horror & Suspense") -> dict:
     """Generate 4-week production plan sized to actual creator capacity (yt-plan)."""
     hours = max(4, hours_per_week)
+
+    # AI Enhancement if Gemini available
+    provider, _ = llm.detect_provider()
+    if provider:
+        voice = resolver.load_voice_content()
+        plan_prompt = f"""You are an elite YouTube programming strategist following skills/yt-plan/SKILL.md.
+Theme: {theme}
+Creator Available Hours/Week: {hours}
+Creator Voice / Channel context:
+{voice if voice else "Dark atmospheric horror storytelling"}
+
+Design a realistic 4-week upload calendar prioritized into 4 tiers:
+Week 1: Search Anchor (Evergreen)
+Week 2: Bread & Butter (Core Community)
+Week 3: Trend / Folklore / Seasonal
+Week 4: Experimental Swing (Outlier Potential)
+
+Output ONLY valid JSON:
+{{
+  "cadence": "Weekly (Every Friday evening)",
+  "weeks": [
+    {{
+      "week": 1,
+      "tier": "Search Anchor (Evergreen)",
+      "title_concept": "Specific compelling video title",
+      "format": "e.g. Long-form 12-16 min narration",
+      "production_time_hrs": {round(hours * 0.8, 1)},
+      "upload_day": "Friday 7:00 PM",
+      "why": "High search volume premise"
+    }},
+    {{
+      "week": 2,
+      "tier": "Bread & Butter (Core Community)",
+      "title_concept": "Specific core video title",
+      "format": "Psychological tension build (10-12 mins)",
+      "production_time_hrs": {round(hours * 0.8, 1)},
+      "upload_day": "Friday 7:00 PM",
+      "why": "Feeds core subscriber retention"
+    }},
+    {{
+      "week": 3,
+      "tier": "Trend / Folklore / Seasonal",
+      "title_concept": "Folklore or trend video title",
+      "format": "Deep dive investigation (14 mins)",
+      "production_time_hrs": {round(hours * 0.9, 1)},
+      "upload_day": "Friday 7:00 PM",
+      "why": "Viral folklore appeal"
+    }},
+    {{
+      "week": 4,
+      "tier": "Experimental Swing (Outlier Potential)",
+      "title_concept": "High curiosity viral swing title",
+      "format": "Fast-paced escalation (8 mins)",
+      "production_time_hrs": {round(hours * 0.7, 1)},
+      "upload_day": "Friday 7:00 PM",
+      "why": "Recommendation algorithm breakout potential"
+    }}
+  ]
+}}
+No markdown fences."""
+        success, resp = llm.generate_ai_response("You are an expert YouTube planner. Output only JSON.", plan_prompt)
+        if success:
+            try:
+                txt = resp.strip()
+                if txt.startswith("```"):
+                    txt = txt.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+                parsed = json.loads(txt)
+                if "weeks" in parsed and len(parsed["weeks"]) == 4:
+                    return {
+                        "creator_hours_per_week": hours,
+                        "monthly_target_uploads": 4,
+                        "theme": theme,
+                        "cadence": parsed.get("cadence", "Weekly (Every Friday evening)"),
+                        "weeks": parsed["weeks"],
+                        "gate_question": "ship it, or change it?"
+                    }
+            except Exception:
+                pass
     
-    # 4-tier idea prioritization
+    # Fallback static calendar
     weeks = [
         {
             "week": 1,
@@ -397,7 +554,62 @@ def plan_content_calendar(hours_per_week: int = 8, theme: str = "Horror & Suspen
 def extract_shorts_concepts(text_or_idea: str) -> dict:
     """Extract 3 self-contained viral Shorts from long video transcript or premise (yt-shorts)."""
     src = text_or_idea.strip()
+
+    # AI Enhancement if Gemini available
+    provider, _ = llm.detect_provider()
+    if provider:
+        shorts_prompt = f"""You are a short-form YouTube video specialist following skills/yt-shorts/SKILL.md.
+Extract 3 self-contained, punchy viral Shorts from this source text:
+SOURCE:
+{src}
+
+Output ONLY valid JSON with this structure:
+{{
+  "shorts": [
+    {{
+      "short_num": 1,
+      "hook_0_3s": "First 3 seconds visual/verbal hook",
+      "duration": "45 seconds (~105 words)",
+      "spoken_script": "The spoken words with tension",
+      "loop_ending": "Ending line that loops into the hook",
+      "target_format": "Vertical 9:16 framing notes"
+    }},
+    {{
+      "short_num": 2,
+      "hook_0_3s": "...",
+      "duration": "50 seconds (~115 words)",
+      "spoken_script": "...",
+      "loop_ending": "...",
+      "target_format": "..."
+    }},
+    {{
+      "short_num": 3,
+      "hook_0_3s": "...",
+      "duration": "40 seconds (~95 words)",
+      "spoken_script": "...",
+      "loop_ending": "...",
+      "target_format": "..."
+    }}
+  ]
+}}
+No markdown fences."""
+        success, resp = llm.generate_ai_response("You are an expert Shorts writer. Output only JSON.", shorts_prompt)
+        if success:
+            try:
+                txt = resp.strip()
+                if txt.startswith("```"):
+                    txt = txt.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+                parsed = json.loads(txt)
+                if "shorts" in parsed and len(parsed["shorts"]) > 0:
+                    return {
+                        "source_summary": src[:120] + "...",
+                        "shorts_extracted": parsed["shorts"],
+                        "gate_question": "ship it, or change it?"
+                    }
+            except Exception:
+                pass
     
+    # Fallback templates
     shorts = [
         {
             "short_num": 1,

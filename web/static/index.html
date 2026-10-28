@@ -2,8 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>YouTube Agent Studio - Fear Studio</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ff0000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fear Studio">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -53,45 +65,71 @@
         <button class="nav-item" data-tab="tab-audit" id="nav-btn-audit">
           <i class="fa-solid fa-stethoscope"></i>
           <span>Channel Audit</span>
-          <span class="pill-badge" style="background: rgba(255,43,85,0.2); color:#ff2b55;">1 Fix</span>
+          <span class="pill-badge" style="background: rgba(255,43,85,0.2); color:#ff2b55;">yt-audit</span>
+        </button>
+        <button class="nav-item" data-tab="tab-retention" id="nav-btn-retention">
+          <i class="fa-solid fa-arrow-trend-down"></i>
+          <span>Audience Retention</span>
+          <span class="pill-badge" style="background: rgba(245,158,11,0.2); color:#f59e0b;">yt-retention</span>
         </button>
 
-        <div class="nav-section-label">SCRIPTING & PACKAGING</div>
+        <div class="nav-section-label">AI SKILLS & PACKAGING</div>
+        <button class="nav-item" data-tab="tab-skill-lab" id="nav-btn-skill-lab">
+          <i class="fa-solid fa-brain"></i>
+          <span>AI Skills Lab</span>
+          <span class="pill-badge badge-glow" style="background: rgba(6,182,212,0.25); color:#06b6d4; font-weight:700;">11 SKILLS</span>
+        </button>
+        <button class="nav-item" data-tab="tab-script" id="nav-btn-script">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Script Studio</span>
+          <span class="pill-badge">yt-script</span>
+        </button>
         <button class="nav-item" data-tab="tab-hook" id="nav-btn-hook">
           <i class="fa-solid fa-bullseye"></i>
-          <span>Hook Scorer</span>
+          <span>Hook Diagnostic</span>
           <span class="pill-badge">21 Formulas</span>
         </button>
         <button class="nav-item" data-tab="tab-title" id="nav-btn-title">
           <i class="fa-solid fa-tag"></i>
           <span>Title & Thumbnail</span>
-          <span class="pill-badge">Linter</span>
-        </button>
-        <button class="nav-item" data-tab="tab-script" id="nav-btn-script">
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span>Script Studio</span>
+          <span class="pill-badge">yt-package</span>
         </button>
         <button class="nav-item" data-tab="tab-seo" id="nav-btn-seo">
           <i class="fa-solid fa-magnifying-glass-chart"></i>
           <span>SEO & Tags</span>
+          <span class="pill-badge">yt-seo</span>
         </button>
         <button class="nav-item" data-tab="tab-shorts" id="nav-btn-shorts">
           <i class="fa-solid fa-mobile-screen-button"></i>
           <span>Shorts Extractor</span>
+          <span class="pill-badge">yt-shorts</span>
+        </button>
+        <button class="nav-item" data-tab="tab-viral" id="nav-btn-viral">
+          <i class="fa-solid fa-fire-flame-curved"></i>
+          <span>Viral Swipe File</span>
+          <span class="pill-badge" style="background: rgba(255,0,80,0.2); color:#ff2b55;">yt-viral</span>
+        </button>
+        <button class="nav-item" data-tab="tab-research" id="nav-btn-research">
+          <i class="fa-solid fa-satellite-dish"></i>
+          <span>Live Spy & Radar</span>
+          <span class="pill-badge badge-glow" style="background: rgba(255,69,0,0.25); color:#ff4500; font-weight:700;">NEW</span>
         </button>
 
         <div class="nav-section-label">PRODUCTION & STRATEGY</div>
         <button class="nav-item" data-tab="tab-chapters" id="nav-btn-chapters">
           <i class="fa-solid fa-list-check"></i>
-          <span>Chapters & EDL</span>
+          <span>Chapters & Dead-Air</span>
+          <span class="pill-badge">yt-edit</span>
         </button>
         <button class="nav-item" data-tab="tab-plan" id="nav-btn-plan">
           <i class="fa-solid fa-calendar-check"></i>
           <span>Content Calendar</span>
+          <span class="pill-badge">yt-plan</span>
         </button>
         <button class="nav-item" data-tab="tab-comment" id="nav-btn-comment">
           <i class="fa-solid fa-comments"></i>
           <span>Comment Responder</span>
+          <span class="pill-badge">yt-comment</span>
         </button>
         <button class="nav-item" data-tab="tab-voice" id="nav-btn-voice">
           <i class="fa-solid fa-microphone-lines"></i>
@@ -129,6 +167,9 @@
             <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
             <span id="theme-toggle-text">Dark</span>
           </button>
+          <button class="btn btn-primary btn-pwa-install hidden" id="btn-pwa-install" title="Install Fear Studio App" style="background: linear-gradient(135deg, #ff0000, #cc0000); font-weight:700;">
+            <i class="fa-solid fa-mobile-screen-button"></i> <span class="btn-label-text">Install App</span>
+          </button>
           <button class="btn btn-secondary btn-relink-topbar" id="btn-relink-channel">
             <i class="fa-solid fa-link"></i> <span class="btn-label-text">Link Channel</span>
           </button>
@@ -139,17 +180,32 @@
 
         <!-- TAB 1: CHANNEL HUB -->
         <section class="tab-pane active" id="tab-channel">
-          <div class="channel-hero">
-            <div class="hero-left">
-              <div class="hero-avatar">
-                <i class="fa-solid fa-ghost"></i>
+          <!-- Enhanced Channel Profile with Real Cover Banner & Avatar -->
+          <div class="channel-profile-card glass-panel" id="hub-channel-card">
+            <!-- 1. Real YouTube Cover Photo Banner -->
+            <div class="channel-cover-banner" id="hub-cover-banner">
+              <div class="banner-gradient-overlay"></div>
+              <div class="banner-top-actions">
+                <span class="live-pill"><span class="pulse-dot"></span> <span id="hub-sync-status-text">YouTube Live Sync Active</span></span>
+                <button class="btn btn-sm btn-glass-blur" id="btn-refresh-channel-live" title="Refresh live channel numbers from YouTube">
+                  <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i> <span id="refresh-btn-label">Sync Live Data</span>
+                </button>
               </div>
-              <div class="hero-info">
+            </div>
+
+            <!-- 2. Hero Content with Floating Circular PFP Avatar -->
+            <div class="channel-hero-content">
+              <div class="hero-avatar-wrapper">
+                <img id="hub-avatar-img" class="hero-avatar-img" src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio PFP">
+                <span class="avatar-status-badge" title="Active & Verified"><i class="fa-solid fa-check"></i></span>
+              </div>
+              <div class="hero-details">
                 <div class="hero-title-row">
                   <h2 id="hub-channel-name">Fear Studio</h2>
                   <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Active Channel</span>
+                  <span class="badge-tag" id="hub-handle-tag" style="background: rgba(255,43,85,0.15); color:#ff2b55; font-weight:700;">@FearStudio96</span>
                 </div>
-                <p class="hero-desc" id="hub-channel-desc">Loading description...</p>
+                <p class="hero-desc" id="hub-channel-desc">Welcome to Fear Studio — dark, atmospheric horror and true scary storytelling.</p>
                 <div class="hero-tags">
                   <span class="tag tag-subs" id="hub-tag-subs"><i class="fa-solid fa-users"></i> <strong id="hub-subscriber-count">120</strong> Subscribers</span>
                   <span class="tag" id="hub-tag-videos"><i class="fa-solid fa-video"></i> <strong id="hub-video-count">39</strong> Videos</span>
@@ -413,6 +469,164 @@
           </div>
         </section>
 
+        <!-- TAB: AI SKILLS LAB (Universal Runner for All 11 Skills) -->
+        <section class="tab-pane" id="tab-skill-lab">
+          <div class="panel-card glass-panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-badge-pill"><i class="fa-solid fa-sparkles"></i> LIVE GEMINI AI ENGINE</div>
+                <h3>AI Skills Lab (Universal 11-Skill Runner)</h3>
+                <p>Run any of the 11 YouTube Agent skills directly in the UI with identical CLI terminal fidelity, voice calibration, and retention guardrails.</p>
+              </div>
+            </div>
+
+            <!-- 11 Skills Interactive Grid -->
+            <div class="skills-selector-grid" id="skills-pill-grid">
+              <button class="skill-pill-card active" data-skill="yt-script" data-desc="Generates 5 hooks off the 21 formulas, scores them, and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.">
+                <div class="pill-icon"><i class="fa-solid fa-scroll"></i></div>
+                <div class="pill-text">
+                  <strong>yt-script</strong>
+                  <span>Script & 5 Hooks</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-package" data-desc="Title + thumbnail pairing linter. Checks mobile character truncation, thumbnail 3-word rule, duplication, and clickability.">
+                <div class="pill-icon"><i class="fa-solid fa-tag"></i></div>
+                <div class="pill-text">
+                  <strong>yt-package</strong>
+                  <span>Title + Thumbnail</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-seo" data-desc="Search-driven 2-line snippet above the fold, 3 exact target queries to win, and 12-15 disambiguation tags.">
+                <div class="pill-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <div class="pill-text">
+                  <strong>yt-seo</strong>
+                  <span>Search SEO & Tags</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-shorts" data-desc="Find the Shorts hiding inside a long video or premise. Extracts 3 self-contained vertical clips with 0-3s hooks.">
+                <div class="pill-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                <div class="pill-text">
+                  <strong>yt-shorts</strong>
+                  <span>Shorts Extractor</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-plan" data-desc="4-week upload calendar prioritized into 4 tiers (Evergreen, Core, Trend, Outlier) matched to creator hours.">
+                <div class="pill-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="pill-text">
+                  <strong>yt-plan</strong>
+                  <span>Content Calendar</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-comment" data-desc="Triages YouTube comments into 4 piles and drafts authentic replies in Fear Studio's calm, dark voice.">
+                <div class="pill-icon"><i class="fa-solid fa-comments"></i></div>
+                <div class="pill-text">
+                  <strong>yt-comment</strong>
+                  <span>Comment Responder</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-viral" data-desc="Identifies outlier viral videos in your niche by channel median multiple and names the winning formula.">
+                <div class="pill-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="pill-text">
+                  <strong>yt-viral</strong>
+                  <span>Viral Swipe Outliers</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-retention" data-desc="Audience retention diagnostic. Analyzes Hook Leak (0-15s drop), sudden cliffs, slide bleed, and fixes.">
+                <div class="pill-icon"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                <div class="pill-text">
+                  <strong>yt-retention</strong>
+                  <span>Retention Curve</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-audit" data-desc="Channel audit ending in ONE decisive action this week instead of twenty distractions.">
+                <div class="pill-icon"><i class="fa-solid fa-stethoscope"></i></div>
+                <div class="pill-text">
+                  <strong>yt-audit</strong>
+                  <span>Channel Audit</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-chapters" data-desc="Validates and writes YouTube chapter timestamps starting at 00:00 with 10s minimum spacing.">
+                <div class="pill-icon"><i class="fa-solid fa-list-check"></i></div>
+                <div class="pill-text">
+                  <strong>yt-chapters</strong>
+                  <span>Video Chapters</span>
+                </div>
+              </button>
+
+              <button class="skill-pill-card" data-skill="yt-edit" data-desc="Turns raw recording transcript into an Edit Decision List: dead air cuts, filler cues ('um'/'uh'), and retakes.">
+                <div class="pill-icon"><i class="fa-solid fa-scissors"></i></div>
+                <div class="pill-text">
+                  <strong>yt-edit</strong>
+                  <span>Edit Decision List</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- Active Skill Overview Banner -->
+            <div class="active-skill-info-banner">
+              <div class="skill-banner-badge" id="lab-active-skill-badge">yt-script</div>
+              <p class="skill-banner-desc" id="lab-active-skill-desc">Generates 5 hooks off the 21 formulas, scores them, and writes the complete spoken script with retention beats and [ON SCREEN: ...] visual directions.</p>
+            </div>
+
+            <!-- Skill Input Box -->
+            <div class="input-group" style="margin-top:18px;">
+              <div class="input-label-row">
+                <label for="lab-skill-input" id="lab-input-label">Your Input (Idea, Topic, Premise, or Raw Text)</label>
+                <div class="preset-chips-wrap" id="lab-preset-chips">
+                  <!-- Dynamically populated per skill -->
+                </div>
+              </div>
+              <textarea id="lab-skill-input" rows="5" placeholder="Enter your idea or topic here..."></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary btn-glow" id="btn-run-lab-skill">
+                <i class="fa-solid fa-bolt"></i> Execute Skill with Gemini AI
+              </button>
+            </div>
+
+            <!-- Dynamic Result Area -->
+            <div class="script-output-container hidden" id="lab-result-box">
+              <div class="script-header-row">
+                <div class="result-title-group">
+                  <h4 id="lab-result-title">AI Skill Output</h4>
+                  <span class="live-pill"><i class="fa-solid fa-circle-check"></i> Gemini 3 Flash Verified</span>
+                </div>
+                <div class="script-actions">
+                  <button class="btn btn-sm btn-secondary" id="btn-copy-lab-result">
+                    <i class="fa-solid fa-copy"></i> Copy Output
+                  </button>
+                </div>
+              </div>
+              <div class="script-content-pre" id="lab-result-text"></div>
+              
+              <!-- Gate Question -->
+              <div class="gate-bar">
+                <span class="gate-title">The Gate Question:</span>
+                <span style="color:var(--text-secondary);">Nothing here publishes without your signoff.</span>
+                <div class="gate-buttons">
+                  <button class="btn btn-success" id="btn-lab-ship" onclick="showToast('Approved! Ready to produce and publish.', 'success')">
+                    <i class="fa-solid fa-check"></i> Ship It!
+                  </button>
+                  <button class="btn btn-secondary" onclick="document.getElementById('lab-skill-input').focus()">
+                    <i class="fa-solid fa-pen"></i> Change It
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <!-- TAB 4: SCRIPT WRITER -->
         <section class="tab-pane" id="tab-script">
           <div class="panel-card">
@@ -478,7 +692,12 @@
             </div>
 
             <div class="input-group">
-              <label for="transcript-input">Transcript or SRT Content</label>
+              <div class="input-label-row">
+                <label for="transcript-input">Transcript or SRT Content (.srt)</label>
+                <button class="btn btn-sm btn-secondary" id="btn-load-sample-srt">
+                  <i class="fa-solid fa-file-lines"></i> Load Horror Sample .SRT
+                </button>
+              </div>
               <textarea id="transcript-input" rows="8" placeholder="1
 00:00:01,000 --> 00:00:05,200
 Welcome back to the studio. Tonight we explore...
@@ -488,20 +707,46 @@ Welcome back to the studio. Tonight we explore...
 The house on the hill has been empty for over twenty years."></textarea>
             </div>
 
-            <div class="action-bar">
-              <button class="btn btn-primary" id="btn-gen-chapters">
-                <i class="fa-solid fa-list-ol"></i> Generate Validated Chapters
+            <div class="form-row" style="margin-top: 10px;">
+              <div class="form-col" style="flex:1;">
+                <label for="deadair-floor-select">Dead Air Silence Floor (Pause Cut Threshold)</label>
+                <select id="deadair-floor-select" class="studio-select" style="width:100%; margin-top:6px;">
+                  <option value="0.35">0.35s (Aggressive jump cuts / TikTok pacing)</option>
+                  <option value="0.45" selected>0.45s (Standard YouTube narrative pacing)</option>
+                  <option value="0.65">0.65s (Horror atmospheric pauses preserved)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="action-bar" style="margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;">
+              <button class="btn btn-primary btn-glow" id="btn-gen-chapters">
+                <i class="fa-solid fa-list-ol"></i> Generate Validated Chapters (yt-chapters)
+              </button>
+              <button class="btn btn-secondary" id="btn-gen-deadair">
+                <i class="fa-solid fa-scissors"></i> Find Dead-Air Cuts & EDL (yt-edit)
               </button>
             </div>
 
-            <div class="output-box hidden" id="chapters-output-box">
+            <!-- Chapters Output -->
+            <div class="output-box hidden" id="chapters-output-box" style="margin-top: 18px;">
               <div class="output-header">
-                <h4>YouTube Description Chapter Block</h4>
+                <h4><i class="fa-solid fa-list-check"></i> Validated YouTube Chapter Block</h4>
                 <button class="btn btn-sm btn-secondary" id="btn-copy-chapters">
                   <i class="fa-solid fa-copy"></i> Copy Chapters
                 </button>
               </div>
-              <pre id="chapters-result-text"></pre>
+              <pre id="chapters-result-text" class="script-content-pre" style="max-height:260px;"></pre>
+            </div>
+
+            <!-- Dead Air Output -->
+            <div class="output-box hidden" id="deadair-output-box" style="margin-top: 18px;">
+              <div class="output-header">
+                <h4><i class="fa-solid fa-scissors"></i> Edit Decision List & Pause Cuts (yt-edit)</h4>
+                <button class="btn btn-sm btn-secondary" id="btn-copy-deadair">
+                  <i class="fa-solid fa-copy"></i> Copy EDL Report
+                </button>
+              </div>
+              <pre id="deadair-result-text" class="script-content-pre" style="max-height:300px;"></pre>
             </div>
           </div>
         </section>
@@ -767,6 +1012,56 @@ The house on the hill has been empty for over twenty years."></textarea>
           </div>
         </section>
 
+        <!-- TAB: AUDIENCE RETENTION (yt-retention) -->
+        <section class="tab-pane" id="tab-retention">
+          <div class="panel-card glass-panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-badge-pill" style="background:rgba(245,158,11,0.2); color:#f59e0b;"><i class="fa-solid fa-chart-line"></i> DIAGNOSTIC ENGINE</div>
+                <h3>Audience Retention Curve Analysis (yt-retention)</h3>
+                <p>Read YouTube Studio retention CSV data to isolate the 3 critical retention leaks: <strong>Hook Leak (0:00-0:15)</strong>, <strong>Drop Cliffs</strong>, and <strong>Slide Bleed</strong>.</p>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <div class="input-label-row">
+                <label for="retention-csv-input">Retention CSV or Position/Percentage Data</label>
+                <button class="btn btn-sm btn-secondary" id="btn-load-sample-retention">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Load Horror Sample CSV
+                </button>
+              </div>
+              <textarea id="retention-csv-input" rows="7" placeholder="Video Time,Audience Retention %
+0:00,100%
+0:15,74%
+0:30,65%
+1:00,60%
+2:00,56%
+3:00,53%
+4:00,50%
+5:00,47%
+6:00,44%
+7:00,41%
+8:00,38%"></textarea>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary btn-glow" id="btn-run-retention">
+                <i class="fa-solid fa-bolt"></i> Diagnose Retention Leaks
+              </button>
+            </div>
+
+            <div class="script-output-container hidden" id="retention-result-box">
+              <div class="script-header-row">
+                <h4><i class="fa-solid fa-stethoscope"></i> Retention Analysis Report</h4>
+                <button class="btn btn-sm btn-secondary" id="btn-copy-retention">
+                  <i class="fa-solid fa-copy"></i> Copy Diagnostic
+                </button>
+              </div>
+              <div class="script-content-pre" id="retention-result-text"></div>
+            </div>
+          </div>
+        </section>
+
         <!-- TAB 9: SEO & TAGS (yt-seo) -->
         <section class="tab-pane" id="tab-seo">
           <div class="panel-card">
@@ -823,6 +1118,165 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="shorts-grid-container hidden" id="shorts-result-box">
               <!-- Populated by JS -->
             </div>
+          </div>
+        </section>
+
+        <!-- TAB: VIRAL SWIPE FILE (yt-viral) -->
+        <section class="tab-pane" id="tab-viral">
+          <div class="panel-card glass-panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-badge-pill" style="background:rgba(255,43,85,0.2); color:#ff2b55;"><i class="fa-solid fa-fire"></i> OUTLIER DETECTOR</div>
+                <h3>Viral Outliers & Swipe File (yt-viral)</h3>
+                <p>Find what is actually outperforming in your niche by channel median multiple, and extract the viral packaging formula.</p>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-col" style="flex:2;">
+                <div class="input-label-row">
+                  <label for="viral-json-input">Collected Competitor Videos (JSON) or Topic</label>
+                  <button class="btn btn-sm btn-secondary" id="btn-load-sample-swipe">
+                    <i class="fa-solid fa-folder-open"></i> Load Horror Swipe Dataset
+                  </button>
+                </div>
+                <textarea id="viral-json-input" rows="6" placeholder='[{"channel":"CreepCast","title":"I Investigated a Radio Station That Does Not Exist","views":850000,"url":"https://youtube.com/..."}, ...]'></textarea>
+              </div>
+              <div class="form-col" style="flex:1;">
+                <label for="viral-multiplier-select">Min. Outlier Multiple</label>
+                <select id="viral-multiplier-select" class="studio-select" style="width:100%; margin-top:8px;">
+                  <option value="1.5">1.5x Channel Median</option>
+                  <option value="2.0" selected>2.0x (Double Channel Median)</option>
+                  <option value="3.0">3.0x (Viral Breakout)</option>
+                  <option value="5.0">5.0x (Extreme Outlier)</option>
+                </select>
+                <p class="sub-text" style="margin-top:10px;">Videos must beat their OWN channel median views to prove the idea, not just channel size.</p>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="btn btn-primary btn-glow" id="btn-run-swipe">
+                <i class="fa-solid fa-bolt"></i> Rank Outliers & Classify Formulas
+              </button>
+            </div>
+
+            <div class="script-output-container hidden" id="viral-result-box">
+              <div class="script-header-row">
+                <h4><i class="fa-solid fa-trophy"></i> Ranked Outlier Swipe File</h4>
+                <button class="btn btn-sm btn-secondary" id="btn-copy-swipe">
+                  <i class="fa-solid fa-copy"></i> Copy Swipe Report
+                </button>
+              </div>
+              <div class="script-content-pre" id="viral-result-text"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB: LIVE COMPETITOR SPY & REDDIT RADAR -->
+        <section class="tab-pane" id="tab-research">
+          <div class="panel-card glass-panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-badge-pill" style="background:rgba(255,69,0,0.2); color:#ff4500;">
+                  <i class="fa-solid fa-satellite-dish"></i> VIRAL RADAR & DISCOVERY
+                </div>
+                <h3>Live Competitor Spy & Reddit Radar</h3>
+                <p>Scrape real-time viral horror stories from Reddit communities and spy on top competitor video performance to auto-synthesize original video concepts.</p>
+              </div>
+            </div>
+
+            <!-- Two Column Research Controls -->
+            <div class="form-row">
+              <!-- Left: Reddit Live Scraper -->
+              <div class="form-col" style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <h4 style="margin:0; font-size:14px; color:#ff4500;"><i class="fa-brands fa-reddit"></i> Reddit Viral Story Radar</h4>
+                  <span class="pill-badge" id="reddit-count-badge" style="background: rgba(255,69,0,0.15); color:#ff4500;">Live Feed</span>
+                </div>
+                
+                <div style="display:flex; gap:10px; margin-bottom:12px;">
+                  <div style="flex:2;">
+                    <label style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Subreddit</label>
+                    <select id="research-reddit-sub" class="studio-select" style="width:100%; margin-top:4px;">
+                      <option value="nosleep" selected>r/NoSleep (Viral Horror Fiction)</option>
+                      <option value="LetsNotMeet">r/LetsNotMeet (True Creepy Encounters)</option>
+                      <option value="Glitch_in_the_Matrix">r/Glitch_in_the_Matrix (Inexplicable Phenomena)</option>
+                      <option value="shortscarystories">r/ShortScaryStories (Punchy Twists)</option>
+                      <option value="DarkTales">r/DarkTales (Atmospheric Tales)</option>
+                    </select>
+                  </div>
+                  <div style="flex:1;">
+                    <label style="font-size:11px; text-transform:uppercase; color:var(--text-secondary);">Timeframe</label>
+                    <select id="research-reddit-time" class="studio-select" style="width:100%; margin-top:4px;">
+                      <option value="week" selected>This Week</option>
+                      <option value="month">This Month</option>
+                      <option value="year">All Time Top</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button class="btn btn-secondary" id="btn-fetch-reddit" style="width:100%;">
+                  <i class="fa-solid fa-arrows-rotate"></i> Pull Trending Reddit Stories
+                </button>
+              </div>
+
+              <!-- Right: Competitor Channel Spy -->
+              <div class="form-col" style="flex:1; background: rgba(0,0,0,0.25); padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <h4 style="margin:0; font-size:14px; color:#ff0033;"><i class="fa-brands fa-youtube"></i> Competitor Channel Spy</h4>
+                  <span class="pill-badge" id="competitor-status-badge" style="background: rgba(255,0,51,0.15); color:#ff0033;">Public Radar</span>
+                </div>
+
+                <div class="preset-chips-wrap" style="margin-bottom:8px;">
+                  <span style="font-size:11px; color:var(--text-muted);">Quick Presets:</span>
+                  <button type="button" class="preset-chip comp-preset-btn" data-handle="@MrNightmare">@MrNightmare</button>
+                  <button type="button" class="preset-chip comp-preset-btn" data-handle="@BeBusta">@BeBusta</button>
+                  <button type="button" class="preset-chip comp-preset-btn" data-handle="@CreepCast">@CreepCast</button>
+                  <button type="button" class="preset-chip comp-preset-btn" data-handle="@Unit522">@Unit522</button>
+                </div>
+
+                <div style="display:flex; gap:8px;">
+                  <input type="text" id="research-competitor-input" placeholder="e.g. @MrNightmare or Channel URL" value="@MrNightmare" style="flex:1;">
+                  <button class="btn btn-secondary" id="btn-spy-competitor">
+                    <i class="fa-solid fa-magnifying-glass"></i> Spy
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Big Synthesis Action Bar -->
+            <div class="action-bar" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <span style="font-size:13px; color:var(--text-secondary);"><i class="fa-solid fa-wand-magic-sparkles" style="color:#06b6d4;"></i> Gemini AI analyzes live scraped trends into Fear Studio concepts:</span>
+              </div>
+              <button class="btn btn-primary btn-glow" id="btn-synthesize-ideas" style="background: linear-gradient(135deg, #ff4500, #ff0055); font-weight:700;">
+                <i class="fa-solid fa-brain"></i> Auto-Generate 5 Viral Video Concepts
+              </button>
+            </div>
+
+            <!-- AI Concepts Container -->
+            <div class="hidden" id="research-ideas-box" style="margin-top:24px;">
+              <div class="script-header-row" style="margin-bottom:16px;">
+                <h4 style="color:#06b6d4; margin:0;"><i class="fa-solid fa-lightbulb"></i> Synthesized Fear Studio Video Packages (5 Concepts)</h4>
+                <span class="pill-badge badge-glow" style="background: rgba(6,182,212,0.25); color:#06b6d4;">AI CURATED</span>
+              </div>
+              <div id="research-ideas-grid" class="research-concepts-grid"></div>
+            </div>
+
+            <!-- Scraped Raw Feeds Section -->
+            <div style="margin-top:28px;">
+              <h4 style="font-size:13px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:12px;">
+                <i class="fa-solid fa-stream"></i> Active Trend Stream (<span id="trend-items-count">0</span> items loaded)
+              </h4>
+              <div id="research-feed-container" class="research-feed-cards">
+                <!-- Populated dynamically with Reddit stories and competitor videos -->
+                <div class="empty-state-card" style="text-align:center; padding:30px; background:rgba(0,0,0,0.2); border-radius:8px;">
+                  <i class="fa-solid fa-radar fa-2x" style="color:var(--text-muted); margin-bottom:10px;"></i>
+                  <p style="color:var(--text-secondary); margin:0;">Click "Pull Trending Stories" or "Spy" on a competitor to load raw trends.</p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </section>
 
