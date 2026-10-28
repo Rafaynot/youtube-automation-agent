@@ -2646,10 +2646,224 @@ body.drawer-no-scroll {
     width: auto;
     max-width: none;
   }
+
+  /* Cover Banner on mobile */
+  .channel-cover-banner {
+    height: 150px;
+  }
+
+  .banner-top-actions {
+    top: 8px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .btn-glass-blur {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .channel-hero-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: -46px;
+    padding: 0 16px 20px 16px;
+    gap: 12px;
+  }
+
+  .hero-avatar-wrapper {
+    width: 86px;
+    height: 86px;
+  }
+
+  .avatar-status-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+  }
+
+  .hero-details {
+    padding-top: 4px;
+    width: 100%;
+  }
+
+  .hero-title-row {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .hero-title-row h2 {
+    font-size: 20px;
+  }
+
+  .hero-desc {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .hero-tags {
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 14px;
+  }
+
+  /* AI Skills Lab on Mobile - 2-Column Responsive Grid */
+  .skills-selector-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  .skill-pill-card {
+    padding: 9px 8px !important;
+    gap: 8px !important;
+    border-radius: 8px !important;
+  }
+
+  .skill-pill-card .pill-icon {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0;
+  }
+
+  .skill-pill-card .pill-text strong {
+    font-size: 11.5px !important;
+  }
+
+  .skill-pill-card .pill-text span {
+    font-size: 9.5px !important;
+  }
+
+  .active-skill-info-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .skill-banner-badge {
+    font-size: 11px;
+  }
+
+  .skill-banner-desc {
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+
+  .input-label-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .preset-chips-wrap {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+  }
+
+  .preset-chip {
+    flex-shrink: 0;
+    padding: 4px 9px;
+    font-size: 11px;
+  }
+
+  #btn-run-lab-skill {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    font-size: 13.5px;
+  }
+
+  .script-content-pre {
+    font-size: 12px !important;
+    padding: 12px 14px !important;
+    line-height: 1.6 !important;
+    max-height: 440px !important;
+  }
+
+  .gate-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    text-align: center !important;
+    padding: 12px 14px !important;
+  }
+
+  .gate-buttons {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .gate-buttons .btn {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 10px !important;
+    font-size: 12.5px !important;
+  }
+
+  .script-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .script-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Research Tab on Mobile */
+  .concept-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .concept-action-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .concept-action-footer div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .concept-action-footer .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* 3. Small Mobile Devices (<= 480px) */
 @media (max-width: 480px) {
+  .topbar {
+    padding: 8px 12px;
+  }
+
+  .topbar-title h1 {
+    font-size: 14px;
+    max-width: 150px;
+  }
+
   .topbar-actions .btn-label-text {
     display: none;
   }
@@ -2658,8 +2872,23 @@ body.drawer-no-scroll {
     display: none;
   }
 
+  .channel-cover-banner {
+    height: 130px;
+  }
+
+  .hero-avatar-wrapper {
+    width: 76px;
+    height: 76px;
+    margin-top: -38px;
+  }
+
+  .hero-title-row h2 {
+    font-size: 18px;
+  }
+
   .stat-banner-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .audit-summary-strip {
@@ -2672,6 +2901,30 @@ body.drawer-no-scroll {
 
   .shorts-grid-container {
     grid-template-columns: 1fr;
+  }
+
+  .skills-selector-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .skill-pill-card {
+    padding: 7px 6px !important;
+    gap: 6px !important;
+  }
+
+  .skill-pill-card .pill-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px !important;
+  }
+
+  .skill-pill-card .pill-text strong {
+    font-size: 11px !important;
+  }
+
+  .bottom-nav-item span {
+    font-size: 9.5px;
   }
 }
 
@@ -2708,6 +2961,19 @@ body.drawer-no-scroll {
   overflow-y: auto;
 }
 
+body.light-theme .script-output-container {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .script-content-pre {
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
 /* ==========================================================================
    ENHANCED DESIGN SYSTEM & AI SKILLS LAB
    ========================================================================== */
@@ -2716,6 +2982,13 @@ body.drawer-no-scroll {
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+body.light-theme .glass-panel {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
 }
 
 .panel-badge-pill {
@@ -2734,8 +3007,18 @@ body.drawer-no-scroll {
   margin-bottom: 8px;
 }
 
+body.light-theme .panel-badge-pill {
+  background: #ffe4e8;
+  border-color: #fecdd3;
+  color: #e11d48;
+}
+
 .badge-glow {
   box-shadow: 0 0 10px rgba(6, 182, 212, 0.35);
+}
+
+body.light-theme .badge-glow {
+  box-shadow: 0 0 6px rgba(6, 182, 212, 0.2);
 }
 
 .btn-glow {
@@ -2784,6 +3067,25 @@ body.drawer-no-scroll {
   box-shadow: 0 4px 18px rgba(255, 43, 85, 0.25);
 }
 
+body.light-theme .skill-pill-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .skill-pill-card:hover {
+  background: #f1f5f9;
+  border-color: #ff2b55;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 43, 85, 0.12);
+}
+
+body.light-theme .skill-pill-card.active {
+  background: #fff1f2;
+  border-color: #ff2b55;
+  box-shadow: 0 4px 16px rgba(255, 43, 85, 0.18);
+}
+
 .skill-pill-card .pill-icon {
   width: 36px;
   height: 36px;
@@ -2798,10 +3100,21 @@ body.drawer-no-scroll {
   transition: all 0.2s;
 }
 
+body.light-theme .skill-pill-card .pill-icon {
+  background: #edf2f7;
+  color: #475569;
+}
+
 .skill-pill-card.active .pill-icon {
   background: #ff2b55;
   color: #fff;
   box-shadow: 0 0 12px rgba(255, 43, 85, 0.5);
+}
+
+body.light-theme .skill-pill-card.active .pill-icon {
+  background: #ff2b55;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(255, 43, 85, 0.4);
 }
 
 .skill-pill-card .pill-text {
@@ -2817,12 +3130,20 @@ body.drawer-no-scroll {
   white-space: nowrap;
 }
 
+body.light-theme .skill-pill-card .pill-text strong {
+  color: #0f172a;
+}
+
 .skill-pill-card .pill-text span {
   font-size: 11px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+body.light-theme .skill-pill-card .pill-text span {
+  color: #64748b;
 }
 
 /* Active Skill Info Banner */
@@ -2837,6 +3158,12 @@ body.drawer-no-scroll {
   border-radius: 8px;
 }
 
+body.light-theme .active-skill-info-banner {
+  background: #fff5f6;
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #ff2b55;
+}
+
 .skill-banner-badge {
   font-family: var(--font-mono, monospace);
   font-weight: 700;
@@ -2848,11 +3175,20 @@ body.drawer-no-scroll {
   white-space: nowrap;
 }
 
+body.light-theme .skill-banner-badge {
+  background: #ffe4e8;
+  color: #e11d48;
+}
+
 .skill-banner-desc {
   font-size: 12.5px;
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
+}
+
+body.light-theme .skill-banner-desc {
+  color: #334155;
 }
 
 /* Preset Chips */
@@ -2888,6 +3224,18 @@ body.drawer-no-scroll {
   background: rgba(255, 43, 85, 0.15);
   border-color: rgba(255, 43, 85, 0.4);
   color: #fff;
+}
+
+body.light-theme .preset-chip {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+}
+
+body.light-theme .preset-chip:hover {
+  background: #ffe4e8;
+  border-color: #fecdd3;
+  color: #e11d48;
 }
 
 /* Studio Select Styled */
@@ -3156,28 +3504,54 @@ body.drawer-no-scroll {
 .channel-profile-card {
   position: relative;
   background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
   overflow: hidden;
   margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark-theme .channel-profile-card {
+  background: #181b20;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+}
+
+body.light-theme .channel-profile-card {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .channel-cover-banner {
   position: relative;
   width: 100%;
-  height: 190px;
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-  background-color: #12151c;
-  background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(15,15,15,0.9) 100%), url('https://yt3.googleusercontent.com/Yhzm34XzC2jrNX83fzSvH4zPQUMdHCleJ4NwQMdLg-v3LcabVdn4eSw08xWGqI-E-VaErIx1=w2560-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj');
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--bg-elevated);
+}
+
+.banner-cover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
 }
 
 .banner-gradient-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(15, 15, 15, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(15, 15, 15, 0.85) 100%);
+  z-index: 1;
+}
+
+body.light-theme .banner-gradient-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(255, 255, 255, 0.6) 75%, #ffffff 100%);
 }
 
 .banner-top-actions {
@@ -3213,20 +3587,34 @@ body.drawer-no-scroll {
   box-shadow: 0 4px 14px rgba(255, 0, 51, 0.35);
 }
 
+body.light-theme .btn-glass-blur {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  color: #111827;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .btn-glass-blur:hover {
+  background: #ff0033;
+  color: #ffffff;
+  border-color: #ff0033;
+}
+
 .channel-hero-content {
   position: relative;
   display: flex;
-  gap: 22px;
+  gap: 24px;
   align-items: flex-start;
-  padding: 0 24px 24px 24px;
-  margin-top: -50px;
+  padding: 0 28px 24px 28px;
+  margin-top: -55px;
   z-index: 3;
 }
 
 .hero-avatar-wrapper {
   position: relative;
-  width: 95px;
-  height: 95px;
+  width: 104px;
+  height: 104px;
   flex-shrink: 0;
 }
 
@@ -3235,50 +3623,185 @@ body.drawer-no-scroll {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #0f0f0f;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 43, 85, 0.5);
-  background: #1f1f1f;
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 0 2px rgba(255, 43, 85, 0.6);
+  background: var(--bg-elevated);
+}
+
+body.light-theme .hero-avatar-img {
+  border-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 0 0 2px rgba(255, 43, 85, 0.7);
 }
 
 .avatar-status-badge {
   position: absolute;
   bottom: 2px;
   right: 2px;
-  width: 24px;
-  height: 24px;
-  background: #2ba640;
+  width: 26px;
+  height: 26px;
+  background: #16a34a;
   color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  border: 2px solid #0f0f0f;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 2.5px solid var(--bg-card);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .avatar-status-badge {
+  border-color: #ffffff;
 }
 
 .hero-details {
   flex: 1;
-  padding-top: 50px;
+  padding-top: 16px;
 }
 
-@media (max-width: 640px) {
-  .channel-hero-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: -45px;
-  }
-  .hero-details {
-    padding-top: 10px;
-  }
-  .hero-title-row {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .hero-tags {
-    justify-content: center;
-  }
+.hero-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-title-row h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.hero-badge {
+  font-size: 11.5px;
+  background: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+  border: 1px solid rgba(22, 163, 74, 0.28);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+body.dark-theme .hero-badge {
+  background: rgba(43, 166, 64, 0.16);
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.badge-tag#hub-handle-tag {
+  background: rgba(255, 43, 85, 0.12);
+  color: #ff2b55;
+  font-weight: 700;
+  border: 1px solid rgba(255, 43, 85, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+body.light-theme .badge-tag#hub-handle-tag {
+  background: #ffe4e8;
+  color: #e11d48;
+  border-color: #fecdd3;
+}
+
+.hero-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  margin: 0 0 16px 0;
+  max-width: 900px;
+  line-height: 1.55;
+}
+
+body.light-theme .hero-desc {
+  color: #4b5563;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Metric pills inside hero */
+.tag {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+body.light-theme .tag {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #4b5563;
+}
+
+body.light-theme .tag strong {
+  color: #111827;
+}
+
+body.dark-theme .tag {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+}
+
+body.dark-theme .tag strong {
+  color: #ffffff;
+}
+
+.tag-subs i {
+  color: #ff2b55;
+}
+
+.tag-videos i {
+  color: #3b82f6;
+}
+
+.tag-lifetime i {
+  color: #f97316;
+}
+
+.tag-link {
+  background: rgba(255, 0, 51, 0.08) !important;
+  color: #ff2b55 !important;
+  border-color: rgba(255, 0, 51, 0.25) !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.tag-link:hover {
+  background: #ff0033 !important;
+  color: #ffffff !important;
+  border-color: #ff0033 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 0, 51, 0.25);
+}
+
+body.light-theme .tag-link {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border-color: #fca5a5 !important;
+}
+
+body.light-theme .tag-link:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 

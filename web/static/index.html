@@ -2,20 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
   <title>YouTube Agent Studio - Fear Studio</title>
-  
-  <!-- PWA & Mobile Web App Meta -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#ff0000">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Fear Studio">
-  <link rel="apple-touch-icon" href="/icon-192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -41,7 +30,7 @@
       <!-- Channel Quick Status -->
       <div class="channel-card-mini" id="sidebar-channel-card">
         <div class="channel-avatar" id="ch-avatar">
-          <img src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+          <img src="/fear_studio_pfp.jpg" alt="Fear Studio" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
         </div>
         <div class="channel-details">
           <div class="channel-name" id="ch-name">Fear Studio</div>
@@ -167,9 +156,6 @@
             <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
             <span id="theme-toggle-text">Dark</span>
           </button>
-          <button class="btn btn-primary btn-pwa-install hidden" id="btn-pwa-install" title="Install Fear Studio App" style="background: linear-gradient(135deg, #ff0000, #cc0000); font-weight:700;">
-            <i class="fa-solid fa-mobile-screen-button"></i> <span class="btn-label-text">Install App</span>
-          </button>
           <button class="btn btn-secondary btn-relink-topbar" id="btn-relink-channel">
             <i class="fa-solid fa-link"></i> <span class="btn-label-text">Link Channel</span>
           </button>
@@ -181,9 +167,10 @@
         <!-- TAB 1: CHANNEL HUB -->
         <section class="tab-pane active" id="tab-channel">
           <!-- Enhanced Channel Profile with Real Cover Banner & Avatar -->
-          <div class="channel-profile-card glass-panel" id="hub-channel-card">
+          <div class="channel-profile-card" id="hub-channel-card">
             <!-- 1. Real YouTube Cover Photo Banner -->
             <div class="channel-cover-banner" id="hub-cover-banner">
+              <img id="hub-cover-img" class="banner-cover-img" src="/fear_studio_banner.jpg" alt="Fear Studio Banner" onerror="this.src='/fear_studio_banner.jpg'" referrerpolicy="no-referrer">
               <div class="banner-gradient-overlay"></div>
               <div class="banner-top-actions">
                 <span class="live-pill"><span class="pulse-dot"></span> <span id="hub-sync-status-text">YouTube Live Sync Active</span></span>
@@ -196,14 +183,14 @@
             <!-- 2. Hero Content with Floating Circular PFP Avatar -->
             <div class="channel-hero-content">
               <div class="hero-avatar-wrapper">
-                <img id="hub-avatar-img" class="hero-avatar-img" src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio PFP">
+                <img id="hub-avatar-img" class="hero-avatar-img" src="/fear_studio_pfp.jpg" alt="Fear Studio PFP" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer">
                 <span class="avatar-status-badge" title="Active & Verified"><i class="fa-solid fa-check"></i></span>
               </div>
               <div class="hero-details">
                 <div class="hero-title-row">
                   <h2 id="hub-channel-name">Fear Studio</h2>
                   <span class="hero-badge"><i class="fa-solid fa-shield-halved"></i> Active Channel</span>
-                  <span class="badge-tag" id="hub-handle-tag" style="background: rgba(255,43,85,0.15); color:#ff2b55; font-weight:700;">@FearStudio96</span>
+                  <span class="badge-tag" id="hub-handle-tag">@FearStudio96</span>
                 </div>
                 <p class="hero-desc" id="hub-channel-desc">Welcome to Fear Studio — dark, atmospheric horror and true scary storytelling.</p>
                 <div class="hero-tags">
@@ -778,7 +765,7 @@ The house on the hill has been empty for over twenty years."></textarea>
             <div class="studio-channel-header">
               <div class="studio-header-left">
                 <div class="studio-avatar" id="studio-ch-avatar">
-                  <img src="https://yt3.googleusercontent.com/X_F0jemSgLXdZlWKArVq6tkQNqMPXLuvowlg0HZMlugRbr8s3ldO56ybYdR_e9oMNmyLkqoPkQ=s160-c-k-c0x00ffffff-no-rj" alt="Fear Studio" class="studio-avatar-img">
+                  <img src="/fear_studio_pfp.jpg" alt="Fear Studio" class="studio-avatar-img" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
                 </div>
                 <div class="studio-ch-info">
                   <div class="studio-name-row">
@@ -1379,17 +1366,17 @@ Where can I learn more about the uncle's house?"></textarea>
       <i class="fa-solid fa-chart-line"></i>
       <span>Studio</span>
     </button>
-    <button class="bottom-nav-item" data-tab="tab-hook" id="bnav-hook" title="Hook Scorer">
-      <i class="fa-solid fa-bullseye"></i>
-      <span>Hooks</span>
+    <button class="bottom-nav-item" data-tab="tab-skill-lab" id="bnav-skill-lab" title="AI Skills Lab">
+      <i class="fa-solid fa-brain"></i>
+      <span>AI Skills</span>
     </button>
     <button class="bottom-nav-item" data-tab="tab-script" id="bnav-script" title="Script Studio">
       <i class="fa-solid fa-wand-magic-sparkles"></i>
       <span>Script</span>
     </button>
-    <button class="bottom-nav-item" data-tab="tab-comment" id="bnav-comment" title="Comment Replies">
-      <i class="fa-solid fa-comments"></i>
-      <span>Comments</span>
+    <button class="bottom-nav-item" data-tab="tab-research" id="bnav-research" title="Viral Research">
+      <i class="fa-solid fa-fire"></i>
+      <span>Spy</span>
     </button>
     <button class="bottom-nav-item" id="bnav-more" title="All Skills & Tools">
       <i class="fa-solid fa-bars-staggered"></i>

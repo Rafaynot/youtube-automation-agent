@@ -5,3 +5,10 @@ output/
 # .env
 # config/client_secret.json
 # config/studio_tokens.json
+.env
+.env.*
+!.env.example
+
+config/client_secret.json
+config/studio_tokens.json
+config/*tokens*.json

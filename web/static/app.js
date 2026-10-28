@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initPlanTab();
   initCommentTab();
   initResearchTab();
-  initPWA();
 });
 
 // ==========================================================================
@@ -286,23 +285,34 @@ async function loadChannelData(forceRefresh = false) {
     }
 
     // Set official Avatar / PFP across all locations dynamically from API
-    if (data.avatar) {
-      const chAv = document.getElementById("ch-avatar");
-      if (chAv) chAv.innerHTML = `<img src="${data.avatar}" alt="PFP" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-      
-      const hubAvImg = document.getElementById("hub-avatar-img");
-      if (hubAvImg) hubAvImg.src = data.avatar;
-
-      const studioAv = document.getElementById("studio-ch-avatar");
-      if (studioAv) studioAv.innerHTML = `<img src="${data.avatar}" alt="PFP" class="studio-avatar-img" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    const pfpSrc = data.avatar || "/fear_studio_pfp.jpg";
+    const chAv = document.getElementById("ch-avatar");
+    if (chAv) {
+      chAv.innerHTML = `<img src="${pfpSrc}" alt="Fear Studio" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    }
+    
+    const hubAvImg = document.getElementById("hub-avatar-img");
+    if (hubAvImg) {
+      hubAvImg.src = pfpSrc;
+      hubAvImg.onerror = function() { this.src = "/fear_studio_pfp.jpg"; };
     }
 
-    // Set official Cover Banner dynamically from API
-    if (data.banner) {
-      const coverBanner = document.getElementById("hub-cover-banner");
-      if (coverBanner) {
-        coverBanner.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(15, 15, 15, 0.88) 100%), url('${data.banner}')`;
-      }
+    const studioAv = document.getElementById("studio-ch-avatar");
+    if (studioAv) {
+      studioAv.innerHTML = `<img src="${pfpSrc}" alt="Fear Studio" class="studio-avatar-img" onerror="this.src='/fear_studio_pfp.jpg'" referrerpolicy="no-referrer" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    }
+
+    // Set official Cover Banner dynamically from API (both <img> tag and fallback container)
+    const bannerSrc = data.banner || "/fear_studio_banner.jpg";
+    const hubCoverImg = document.getElementById("hub-cover-img");
+    if (hubCoverImg) {
+      hubCoverImg.src = bannerSrc;
+      hubCoverImg.onerror = function() { this.src = "/fear_studio_banner.jpg"; };
+    }
+
+    const coverBanner = document.getElementById("hub-cover-banner");
+    if (coverBanner) {
+      coverBanner.style.backgroundImage = `linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(15, 15, 15, 0.88) 100%), url('${bannerSrc}')`;
     }
 
     // Update Last Refreshed label
@@ -2208,47 +2218,6 @@ function initResearchTab() {
 
   // Pre-load initial Reddit stories on first visit if empty
   btnFetchReddit.click();
-}
-
-// 19. Progressive Web App (PWA) & Mobile Install Prompt
-function initPWA() {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/sw.js").catch(err => {
-        console.log("Service Worker registration failed:", err);
-      });
-    });
-  }
-
-  let deferredPrompt;
-  const installBtn = document.getElementById("btn-pwa-install");
-
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (installBtn) {
-      installBtn.classList.remove("hidden");
-    }
-  });
-
-  installBtn?.addEventListener("click", async () => {
-    if (!deferredPrompt) {
-      showToast("To install on mobile, tap browser menu (⋮) -> 'Add to Home screen' / 'Install App'.", "info", 5000);
-      return;
-    }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      showToast("Installing Fear Studio App on your device!", "success");
-      installBtn.classList.add("hidden");
-    }
-    deferredPrompt = null;
-  });
-
-  window.addEventListener("appinstalled", () => {
-    if (installBtn) installBtn.classList.add("hidden");
-    showToast("Fear Studio App installed to Home Screen!", "success");
-  });
 }
 
 // Helper utilities

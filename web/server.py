@@ -446,13 +446,11 @@ def background_channel_refresher(interval_seconds=300):
 def start_server(port=5000):
     # Launch background live YouTube sync thread
     threading.Thread(target=background_channel_refresher, args=(300,), daemon=True).start()
-    server = ThreadingHTTPServer(("0.0.0.0", port), YouTubeAgentHandler)
+    server = ThreadingHTTPServer(("127.0.0.1", port), YouTubeAgentHandler)
     print(f"\n=======================================================")
     print(f"  YOUTUBE AGENT WEB DASHBOARD STARTED")
-    print(f"  LOCAL PC: http://localhost:{port}")
-    print(f"  NETWORK:  http://0.0.0.0:{port}")
+    print(f"  URL: http://localhost:{port}")
     print(f"  LIVE SYNC: Active (Auto-refreshes every 5 mins)")
-    print(f"  PWA READY: Installable on Mobile & Desktop")
     print(f"=======================================================\n")
     return server
 

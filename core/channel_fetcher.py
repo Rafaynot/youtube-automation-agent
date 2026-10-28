@@ -132,10 +132,41 @@ def fetch_channel_data(channel_url_or_handle: str) -> dict:
 
     return channel_info
 
+def cache_image_asset(url: str, dest_name: str) -> str:
+    """Download and cache remote image to web/static, returns relative path."""
+    if not url or not url.startswith("http"):
+        return url
+    static_dir = ROOT / "web" / "static"
+    static_dir.mkdir(parents=True, exist_ok=True)
+    target_file = static_dir / dest_name
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status == 200:
+                target_file.write_bytes(resp.read())
+                return f"/{dest_name}"
+    except Exception:
+        pass
+    return f"/{dest_name}" if target_file.exists() else url
+
 def save_channel_config(channel_info: dict) -> Path:
-    """Save channel metadata to config/channel.json."""
+    """Save channel metadata to config/channel.json with cached assets."""
     config_dir = ROOT / "config"
     config_dir.mkdir(exist_ok=True)
+
+    # Cache avatar and banner locally so they render 100% reliably in any environment
+    avatar_url = channel_info.get("avatar_cdn") or channel_info.get("avatar")
+    if avatar_url and str(avatar_url).startswith("http"):
+        channel_info["avatar_cdn"] = avatar_url
+        cache_image_asset(avatar_url, "fear_studio_pfp.jpg")
+        channel_info["avatar"] = "/fear_studio_pfp.jpg"
+
+    banner_url = channel_info.get("banner_cdn") or channel_info.get("banner")
+    if banner_url and str(banner_url).startswith("http"):
+        channel_info["banner_cdn"] = banner_url
+        cache_image_asset(banner_url, "fear_studio_banner.jpg")
+        channel_info["banner"] = "/fear_studio_banner.jpg"
+
     channel_file = config_dir / "channel.json"
     channel_file.write_text(json.dumps(channel_info, indent=2, ensure_ascii=False), encoding="utf-8")
     return channel_file
